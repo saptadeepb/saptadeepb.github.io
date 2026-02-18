@@ -3,1045 +3,803 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dr. Saptadeep Biswas | AI & Operations Research</title>
+<title>SANKALP Lab | Dr. Saptadeep Biswas</title>
+<meta name="description" content="SANKALP Lab — Systems, Algorithms & Nature-inspired Knowledge for Adaptive Logistics & Prediction. Led by Dr. Saptadeep Biswas, Assistant Professor, GITAM University.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #0a0a0f;
-    --cream: #f5f2eb;
-    --accent: #c0392b;
-    --accent2: #1a3a6b;
-    --gold: #b5860d;
-    --mid: #6b6b7a;
-    --light: #e8e4dc;
-    --white: #fafaf7;
-  }
+/* ─── TOKENS ─────────────────────────────────────────────── */
+:root {
+  --ink:      #09090e;
+  --cream:    #f4f1e8;
+  --cream2:   #ede9de;
+  --white:    #faf9f4;
+  --mid:      #64636f;
+  --light:    #e2ddd3;
+  --accent:   #b83228;   /* deep crimson */
+  --navy:     #18345f;   /* rich navy */
+  --gold:     #a97c0e;
+  --saffron:  #d4681a;
+  --sage:     #3d6b58;
+  --lavender: #4a4a8a;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+  --font-mono:  'Space Mono', 'Courier New', monospace;
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
 
-  html { scroll-behavior: smooth; font-size: 16px; }
+/* ─── CURSOR ──────────────────────────────────────────────── */
+.cursor {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .25s, height .25s, background .25s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  position: fixed; width: 34px; height: 34px;
+  border: 1.5px solid var(--navy); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width .3s, height .3s, opacity .3s, border-color .3s;
+  opacity: .55;
+}
+.cursor.hovered { width: 16px; height: 16px; background: var(--navy); }
+.cursor-ring.hovered { width: 52px; height: 52px; opacity: .25; }
 
-  body {
-    background: var(--cream);
-    color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
+/* ─── SCROLLBAR ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--navy); }
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 10px; height: 10px;
-    background: var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
-    mix-blend-mode: multiply;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1.5px solid var(--accent2);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-    opacity: 0.6;
-  }
-  body:hover .cursor { opacity: 1; }
+/* ─── UTILITIES ───────────────────────────────────────────── */
+.label {
+  display: inline-block;
+  font-family: var(--font-mono); font-size: .6rem;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1rem;
+}
+.label-light { color: rgba(244,241,232,.38); }
+.divider { width: 40px; height: 2px; background: var(--accent); margin: 1.6rem 0; }
 
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--cream); }
-  ::-webkit-scrollbar-thumb { background: var(--accent2); }
+/* reveal on scroll */
+.reveal {
+  opacity: 0; transform: translateY(26px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+.d1 { transition-delay: .1s; }
+.d2 { transition-delay: .2s; }
+.d3 { transition-delay: .3s; }
+.d4 { transition-delay: .4s; }
+.d5 { transition-delay: .5s; }
 
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 1.4rem 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(245,242,235,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(10,10,15,0.07);
-    transition: all 0.3s ease;
-  }
-  .nav-logo {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink);
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--accent); }
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-  }
-  .nav-links a {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--mid);
-    text-decoration: none;
-    position: relative;
-    transition: color 0.2s;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -3px; left: 0;
-    width: 0; height: 1.5px;
-    background: var(--accent);
-    transition: width 0.3s ease;
-  }
-  .nav-links a:hover { color: var(--ink); }
-  .nav-links a:hover::after { width: 100%; }
+/* ─── KEYFRAMES ───────────────────────────────────────────── */
+@keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+@keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+@keyframes pulse    { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.7)} }
+@keyframes drift    { 0%,100%{transform:translate(-50%,-50%) rotate(0deg) scale(1)} 50%{transform:translate(-50%,-50%) rotate(3deg) scale(1.02)} }
+@keyframes shimmer  { 0%{background-position:200% center} 100%{background-position:-200% center} }
 
-  /* ═══ HERO ═══ */
-  #hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-  }
+/* ════════════════════════════════════════════════
+   NAV
+════════════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 3.5rem;
+  background: rgba(244,241,232,.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(9,9,14,.06);
+  transition: border-color .3s;
+}
+.nav-brand { text-decoration: none; display: flex; flex-direction: column; gap: .1rem; }
+.nav-brand-name {
+  font-family: var(--font-mono); font-size: .82rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink); line-height: 1;
+  display: flex; align-items: center; gap: .1em;
+}
+/* SANKALP colored letters in nav */
+.nc-s { color: var(--accent); }
+.nc-a { color: var(--saffron); }
+.nc-n { color: var(--gold); }
+.nc-k { color: var(--navy); }
+.nc-a2 { color: var(--sage); }
+.nc-lp { color: var(--lavender); }
+.nav-brand-name .nav-lab { color: var(--mid); font-size: .68rem; margin-left: .3em; }
+.nav-brand-sub {
+  font-family: var(--font-mono); font-size: .48rem;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--mid);
+}
+.nav-links { display: flex; gap: 2.4rem; list-style: none; }
+.nav-links a {
+  font-size: .76rem; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--mid); text-decoration: none;
+  position: relative; transition: color .2s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 1.5px; background: var(--accent); transition: width .3s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
 
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 9rem 4rem 5rem 4rem;
-    position: relative;
-    z-index: 2;
-  }
+/* ════════════════════════════════════════════════
+   HERO
+════════════════════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  overflow: hidden; position: relative;
+}
 
-  .hero-eyebrow {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.8rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.2s;
-  }
+/* LEFT */
+.hero-l {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 9rem 4.5rem 5rem;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: .64rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 2rem;
+  opacity: 0; animation: fadeUp .8s ease forwards .15s;
+}
+.hero-name {
+  font-family: var(--font-serif); font-size: clamp(3rem, 4.5vw, 5.2rem);
+  font-weight: 300; line-height: 1.04; color: var(--ink);
+  margin-bottom: .9rem;
+  opacity: 0; animation: fadeUp .8s ease forwards .35s;
+}
+.hero-name em { font-style: italic; color: var(--navy); }
 
-  .hero-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3.2rem, 5vw, 5.5rem);
-    font-weight: 300;
-    line-height: 1.05;
-    color: var(--ink);
-    margin-bottom: 0.6rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.4s;
-  }
-  .hero-name em {
-    font-style: italic;
-    color: var(--accent2);
-  }
+/* SANKALP inline in hero */
+.hero-lab-row {
+  display: flex; align-items: center; gap: .9rem;
+  margin-bottom: 1.6rem;
+  opacity: 0; animation: fadeUp .8s ease forwards .52s;
+  flex-wrap: wrap;
+}
+.hl-word {
+  font-family: var(--font-mono); font-size: 1rem; font-weight: 700;
+  letter-spacing: .28em; text-transform: uppercase;
+  display: flex; align-items: baseline;
+}
+.hl-s  { color: var(--accent); }
+.hl-a  { color: var(--saffron); }
+.hl-n  { color: var(--gold); }
+.hl-k  { color: var(--navy); }
+.hl-a2 { color: var(--sage); }
+.hl-lp { color: var(--lavender); }
+.hl-sep {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--mid); border: 1px solid var(--light); padding: .25rem .6rem;
+}
+.hl-hindi {
+  font-family: var(--font-serif); font-size: .96rem; font-style: italic;
+  color: var(--mid);
+}
 
-  .hero-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--mid);
-    letter-spacing: 0.03em;
-    margin-bottom: 2.5rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.6s;
-    line-height: 1.6;
-  }
-  .hero-title strong { color: var(--ink); font-weight: 500; }
+.hero-position {
+  font-size: .92rem; color: var(--mid); line-height: 1.7;
+  margin-bottom: 1.8rem;
+  opacity: 0; animation: fadeUp .8s ease forwards .68s;
+}
+.hero-position strong { color: var(--ink); font-weight: 600; }
 
-  .hero-tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.55rem;
-    font-style: italic;
-    font-weight: 300;
-    color: var(--ink);
-    line-height: 1.5;
-    max-width: 480px;
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.8s;
-    border-left: 3px solid var(--accent);
-    padding-left: 1.4rem;
-  }
+.hero-tagline {
+  font-family: var(--font-serif); font-size: 1.4rem;
+  font-style: italic; font-weight: 300;
+  color: var(--ink); line-height: 1.55; max-width: 430px;
+  border-left: 3px solid var(--accent); padding-left: 1.3rem;
+  margin-bottom: 2.8rem;
+  opacity: 0; animation: fadeUp .8s ease forwards .85s;
+}
 
-  .hero-ctas {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 1s;
-  }
+.hero-ctas {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .8s ease forwards 1.05s;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .82rem 2rem; font-size: .76rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; border: 1.5px solid; transition: all .3s;
+  position: relative; overflow: hidden; cursor: none;
+}
+.btn span { position: relative; z-index: 1; }
+.btn::before {
+  content: ''; position: absolute; inset: 0;
+  transform: translateX(-101%); transition: transform .3s ease; z-index: 0;
+}
+.btn-dark { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.btn-dark::before { background: var(--accent); }
+.btn-dark:hover { border-color: var(--accent); }
+.btn-dark:hover::before { transform: none; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: var(--cream); }
 
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--ink);
-    color: var(--cream);
-    padding: 0.85rem 2rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: 1.5px solid var(--ink);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--accent);
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: -1;
-  }
-  .btn-primary:hover { border-color: var(--accent); }
-  .btn-primary:hover::before { transform: translateX(0); }
+/* RIGHT */
+.hero-r {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #18345f 0%, #0c2040 55%, #06101f 100%);
+}
+.hero-r .grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+}
+/* animated watermark */
+.hero-wm {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center; pointer-events: none; user-select: none;
+  animation: drift 12s ease-in-out infinite;
+}
+.hero-wm-en {
+  display: block;
+  font-family: var(--font-mono); font-size: 4.5rem; font-weight: 700;
+  color: rgba(255,255,255,.038); letter-spacing: .4em;
+  line-height: 1.15;
+}
+.hero-wm-hi {
+  display: block;
+  font-family: var(--font-serif); font-size: 5.5rem; font-weight: 700;
+  color: rgba(255,255,255,.028);
+  line-height: 1;
+}
 
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: transparent;
-    color: var(--ink);
-    padding: 0.85rem 2rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: 1.5px solid var(--ink);
-    transition: all 0.3s ease;
-  }
-  .btn-outline:hover { background: var(--ink); color: var(--cream); }
+/* badge */
+.hero-badge {
+  position: absolute; top: 2.5rem; right: 2.5rem; z-index: 4;
+  opacity: 0; animation: fadeIn .8s ease forwards 1.5s;
+}
+.badge-pill {
+  background: var(--accent); color: white;
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .16em; text-transform: uppercase;
+  padding: .55rem 1.1rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.badge-dot {
+  width: 6px; height: 6px; background: white; border-radius: 50%;
+  animation: pulse 1.6s infinite;
+}
 
-  /* Hero Right - Visual */
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-    background: var(--accent2);
-  }
-  .hero-right::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--accent2) 0%, #0d2347 60%, #0a1628 100%);
-  }
-  .hero-visual-text {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 3rem;
-    z-index: 2;
-  }
-  .big-letter {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.04);
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-    white-space: nowrap;
-  }
-  .hero-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    z-index: 2;
-    position: relative;
-    animation: fadeUp 1s ease forwards 1.2s;
-    opacity: 0;
-  }
-  .stat-card {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12);
-    padding: 1.4rem;
-    backdrop-filter: blur(8px);
-  }
-  .stat-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.8rem;
-    font-weight: 600;
-    color: #ffffff;
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .stat-number span { color: var(--accent); font-size: 1.8rem; }
-  .stat-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-  }
-  .hero-badge {
-    position: absolute;
-    top: 3rem;
-    right: 3rem;
-    z-index: 3;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 1.4s;
-  }
-  .badge-inner {
-    background: var(--accent);
-    color: white;
-    padding: 0.6rem 1.2rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .badge-dot { width: 6px; height: 6px; background: white; border-radius: 50%; animation: pulse 1.5s infinite; }
+/* stats */
+.hero-stats-wrap {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 2.5rem; z-index: 3;
+  opacity: 0; animation: fadeUp .9s ease forwards 1.2s;
+}
+.hero-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+}
+.stat {
+  background: rgba(255,255,255,.065);
+  border: 1px solid rgba(255,255,255,.1);
+  padding: 1.25rem 1.4rem;
+  backdrop-filter: blur(8px);
+  position: relative; overflow: hidden;
+}
+.stat::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 2px; background: var(--accent);
+  transition: width .4s ease;
+}
+.stat:hover::after { width: 100%; }
+.stat-num {
+  font-family: var(--font-serif); font-size: 2.5rem; font-weight: 600;
+  color: white; line-height: 1; margin-bottom: .25rem;
+}
+.stat-num sup { font-size: 1.3rem; color: var(--accent); }
+.stat-lbl {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.42);
+}
 
-  /* Grid Lines Decoration */
-  .grid-lines {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-  }
+/* ════════════════════════════════════════════════
+   SANKALP DEDICATED SECTION
+════════════════════════════════════════════════ */
+#sankalp {
+  background: var(--ink);
+  padding: 8rem 4.5rem;
+  position: relative; overflow: hidden;
+}
+/* giant Devanagari watermark */
+#sankalp::after {
+  content: 'संकल्प';
+  position: absolute; right: -1.5rem; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-serif); font-size: 20rem; font-weight: 700;
+  color: rgba(255,255,255,.018);
+  pointer-events: none; line-height: 1; user-select: none;
+}
+.sankalp-wrap {
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.55fr;
+  gap: 7rem; align-items: center;
+  position: relative; z-index: 1;
+}
 
-  /* ═══ ABOUT ═══ */
-  #about {
-    padding: 8rem 4rem;
-    max-width: 1300px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 6rem;
-    align-items: start;
-  }
-  .about-left h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 300;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-  }
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.2rem;
-    display: block;
-  }
-  .divider {
-    width: 48px;
-    height: 2px;
-    background: var(--accent);
-    margin: 1.8rem 0;
-  }
-  .about-left p {
-    font-size: 0.95rem;
-    line-height: 1.8;
-    color: var(--mid);
-    margin-bottom: 1rem;
-  }
-  .about-right {}
-  .about-highlights {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-  }
-  .highlight-item {
-    border: 1px solid var(--light);
-    padding: 1.5rem;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .highlight-item:hover {
-    border-color: var(--accent2);
-    transform: translateY(-3px);
-  }
-  .highlight-icon {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
-    display: block;
-  }
-  .highlight-item h4 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--ink);
-    margin-bottom: 0.4rem;
-  }
-  .highlight-item p {
-    font-size: 0.85rem;
-    color: var(--mid);
-    line-height: 1.6;
-  }
-  .expertise-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-  .tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.4rem 0.9rem;
-    border: 1px solid var(--ink);
-    color: var(--ink);
-    transition: all 0.2s;
-  }
-  .tag:hover { background: var(--ink); color: var(--cream); }
+/* Left: logo area */
+.sk-logo {
+  display: flex; flex-direction: column; gap: .6rem;
+  margin-bottom: 2.2rem;
+}
+.sk-letters {
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(2.8rem, 3.8vw, 4.2rem);
+  letter-spacing: .3em; line-height: 1;
+  display: flex; align-items: baseline;
+}
+.sk-s  { color: var(--accent); }
+.sk-a  { color: var(--saffron); }
+.sk-n  { color: var(--gold); }
+.sk-k  { color: #6b9de8; }
+.sk-a2 { color: #7ecfa0; }
+.sk-lp { color: #c9a0e8; }
+.sk-tag {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .35em; text-transform: uppercase;
+  color: rgba(255,255,255,.22);
+}
+.sk-hindi {
+  font-family: var(--font-serif); font-size: 2.4rem;
+  font-style: italic; color: rgba(255,255,255,.1);
+}
 
-  /* ═══ RESEARCH FOCUS ═══ */
-  #research {
-    background: var(--ink);
-    color: var(--cream);
-    padding: 8rem 4rem;
-  }
-  .research-inner {
-    max-width: 1300px;
-    margin: 0 auto;
-  }
-  .research-header {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 4rem;
-    margin-bottom: 5rem;
-    align-items: end;
-  }
-  .research-header h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 300;
-    line-height: 1.1;
-    color: var(--cream);
-  }
-  .research-header p {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: rgba(245,242,235,0.6);
-    align-self: end;
-  }
-  .research-areas {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: rgba(255,255,255,0.05);
-  }
-  .area-card {
-    background: var(--ink);
-    padding: 2.5rem;
-    border: 1px solid rgba(255,255,255,0.06);
-    position: relative;
-    overflow: hidden;
-    transition: background 0.4s ease;
-  }
-  .area-card::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 3px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-  .area-card:hover { background: #111118; }
-  .area-card:hover::before { transform: scaleX(1); }
-  .area-number {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    margin-bottom: 1.5rem;
-    display: block;
-  }
-  .area-card h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 400;
-    color: var(--cream);
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-  .area-card p {
-    font-size: 0.85rem;
-    line-height: 1.75;
-    color: rgba(245,242,235,0.5);
-  }
-  .area-arrow {
-    margin-top: 1.5rem;
-    font-size: 1.2rem;
-    color: rgba(255,255,255,0.2);
-    transition: color 0.3s, transform 0.3s;
-    display: inline-block;
-  }
-  .area-card:hover .area-arrow { color: var(--accent); transform: translateX(6px); }
+/* meaning block */
+.sk-meaning {
+  border-left: 2px solid var(--saffron); padding-left: 1.4rem;
+}
+.sk-meaning .sk-word {
+  font-family: var(--font-mono); font-size: .68rem;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--saffron); display: block; margin-bottom: .7rem;
+}
+.sk-meaning p {
+  font-family: var(--font-serif); font-size: 1.22rem;
+  font-style: italic; font-weight: 300;
+  color: rgba(244,241,232,.55); line-height: 1.72;
+}
 
-  /* ═══ PUBLICATIONS ═══ */
-  #publications {
-    padding: 8rem 4rem;
-    max-width: 1300px;
-    margin: 0 auto;
-  }
-  .pub-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 4rem;
-  }
-  .pub-header h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 300;
-    line-height: 1.1;
-  }
-  .pub-metrics {
-    display: flex;
-    gap: 3rem;
-  }
-  .metric {
-    text-align: right;
-  }
-  .metric-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: var(--accent2);
-    display: block;
-    line-height: 1;
-  }
-  .metric-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--mid);
-  }
+/* Right: acronym breakdown */
+.sk-right {}
+.sk-acronym-label {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .25em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.4rem; display: block;
+}
+.sk-row {
+  display: flex; align-items: flex-start; gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  padding: .8rem 0;
+}
+.sk-row:first-of-type { border-top: 1px solid rgba(255,255,255,.05); }
+.sk-letter {
+  font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700;
+  min-width: 32px; flex-shrink: 0; padding-top: .05rem;
+}
+.sk-letter.skl-s  { color: var(--accent); }
+.sk-letter.skl-a  { color: var(--saffron); }
+.sk-letter.skl-n  { color: var(--gold); }
+.sk-letter.skl-k  { color: #6b9de8; }
+.sk-letter.skl-a2 { color: #7ecfa0; }
+.sk-letter.skl-lp { color: #c9a0e8; }
+.sk-def {
+  font-family: var(--font-sans); font-size: .86rem;
+  color: rgba(255,255,255,.52); line-height: 1.5;
+}
+.sk-def strong { color: white; font-weight: 500; }
 
-  .pub-filter {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 2.5rem;
-    flex-wrap: wrap;
-  }
-  .filter-btn {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 0.5rem 1.1rem;
-    border: 1px solid var(--light);
-    background: transparent;
-    color: var(--mid);
-    cursor: none;
-    transition: all 0.2s;
-  }
-  .filter-btn.active, .filter-btn:hover {
-    background: var(--ink);
-    color: var(--cream);
-    border-color: var(--ink);
-  }
+/* Pledge */
+.sk-pledge {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 1.8rem; margin-top: 2rem;
+}
+.sk-pledge p {
+  font-family: var(--font-serif); font-size: 1.12rem;
+  font-style: italic; font-weight: 300;
+  color: rgba(244,241,232,.62); line-height: 1.74;
+}
+.sk-pledge cite {
+  display: block; margin-top: .9rem;
+  font-family: var(--font-mono); font-size: .56rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.25); font-style: normal;
+}
 
-  .pub-list { display: flex; flex-direction: column; gap: 0; }
-  .pub-item {
-    border-top: 1px solid var(--light);
-    padding: 1.8rem 0;
-    display: grid;
-    grid-template-columns: 80px 1fr auto;
-    gap: 2rem;
-    align-items: start;
-    transition: all 0.2s;
-  }
-  .pub-item:hover { background: var(--white); margin: 0 -1rem; padding: 1.8rem 1rem; }
-  .pub-item:last-child { border-bottom: 1px solid var(--light); }
-  .pub-year {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--mid);
-    letter-spacing: 0.05em;
-    padding-top: 0.2rem;
-  }
-  .pub-content h4 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--ink);
-    line-height: 1.5;
-    margin-bottom: 0.4rem;
-  }
-  .pub-journal {
-    font-size: 0.82rem;
-    color: var(--mid);
-    font-style: italic;
-    margin-bottom: 0.5rem;
-  }
-  .pub-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-  .pub-tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.08em;
-    padding: 0.2rem 0.6rem;
-    background: var(--light);
-    color: var(--ink);
-  }
-  .pub-tag.q1 { background: rgba(26,58,107,0.1); color: var(--accent2); }
-  .pub-tag.hot { background: rgba(192,57,43,0.1); color: var(--accent); }
-  .pub-link {
-    color: var(--accent2);
-    font-size: 0.75rem;
-    font-family: 'Space Mono', monospace;
-    text-decoration: none;
-    white-space: nowrap;
-    padding-top: 0.2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    transition: color 0.2s;
-  }
-  .pub-link:hover { color: var(--accent); }
+/* ════════════════════════════════════════════════
+   ABOUT
+════════════════════════════════════════════════ */
+#about {
+  padding: 8rem 4.5rem; max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.45fr; gap: 6rem;
+  align-items: start;
+}
+.about-l h2 {
+  font-family: var(--font-serif); font-size: 3.2rem;
+  font-weight: 300; line-height: 1.1;
+}
+.about-l p {
+  font-size: .92rem; line-height: 1.86; color: var(--mid); margin-bottom: 1rem;
+}
+.about-l p strong { color: var(--ink); font-weight: 600; }
 
-  /* ═══ EDUCATION & EXPERIENCE ═══ */
-  #timeline {
-    background: linear-gradient(180deg, var(--cream) 0%, #ede9e0 100%);
-    padding: 8rem 4rem;
-  }
-  .timeline-inner {
-    max-width: 1300px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-  }
-  .timeline-col h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.8rem;
-    font-weight: 300;
-    margin-bottom: 3rem;
-  }
-  .timeline-item {
-    position: relative;
-    padding-left: 2rem;
-    padding-bottom: 2.5rem;
-    border-left: 1px solid var(--light);
-  }
-  .timeline-item::before {
-    content: '';
-    position: absolute;
-    left: -5px; top: 6px;
-    width: 9px; height: 9px;
-    background: var(--accent);
-    border-radius: 50%;
-    border: 2px solid var(--cream);
-    box-shadow: 0 0 0 1px var(--accent);
-  }
-  .timeline-item:last-child { border-left: 1px solid transparent; }
-  .timeline-year {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-  }
-  .timeline-item h4 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.2rem;
-    line-height: 1.4;
-  }
-  .timeline-item .inst {
-    font-size: 0.85rem;
-    color: var(--mid);
-    margin-bottom: 0.5rem;
-  }
-  .timeline-item .desc {
-    font-size: 0.82rem;
-    line-height: 1.65;
-    color: var(--mid);
-  }
-  .fellowship-badge {
-    display: inline-block;
-    background: var(--gold);
-    color: white;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.25rem 0.6rem;
-    margin-top: 0.5rem;
-  }
+.highlights {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.3rem; margin-bottom: 2.5rem;
+}
+.hl-card {
+  border: 1px solid var(--light); padding: 1.4rem;
+  transition: border-color .3s, transform .3s;
+}
+.hl-card:hover { border-color: var(--navy); transform: translateY(-3px); }
+.hl-icon { font-size: 1.3rem; display: block; margin-bottom: .7rem; }
+.hl-card h4 {
+  font-size: .75rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink); margin-bottom: .35rem;
+}
+.hl-card p { font-size: .82rem; color: var(--mid); line-height: 1.6; }
 
-  /* ═══ METRICS BANNER ═══ */
-  #metrics {
-    background: var(--accent2);
-    padding: 5rem 4rem;
-    overflow: hidden;
-    position: relative;
-  }
-  #metrics::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-  .metrics-inner {
-    max-width: 1300px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .metric-block {
-    padding: 2.5rem;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    text-align: center;
-  }
-  .metric-block:last-child { border-right: none; }
-  .metric-big {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.8rem;
-    font-weight: 600;
-    color: white;
-    line-height: 1;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  .metric-big sup { font-size: 1.8rem; }
-  .metric-desc {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
-    line-height: 1.5;
-  }
+.tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.tag {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .32rem .8rem; border: 1px solid var(--ink); color: var(--ink);
+  transition: all .2s; cursor: default;
+}
+.tag:hover { background: var(--ink); color: var(--cream); }
 
-  /* ═══ SKILLS ═══ */
-  #skills {
-    padding: 8rem 4rem;
-    max-width: 1300px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 6rem;
-    align-items: start;
-  }
-  #skills h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    line-height: 1.1;
-  }
-  .skills-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-  }
-  .skill-group h4 {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1rem;
-  }
-  .skill-items {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .skill-item {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.88rem;
-    color: var(--ink);
-  }
-  .skill-item::before {
-    content: '▸';
-    color: var(--accent2);
-    font-size: 0.7rem;
-  }
+/* ════════════════════════════════════════════════
+   RESEARCH
+════════════════════════════════════════════════ */
+#research { background: var(--ink); padding: 8rem 4.5rem; }
+.research-wrap { max-width: 1280px; margin: 0 auto; }
+.research-head {
+  display: grid; grid-template-columns: 1fr 2fr;
+  gap: 4rem; margin-bottom: 5rem; align-items: end;
+}
+.research-head h2 {
+  font-family: var(--font-serif); font-size: 3.2rem;
+  font-weight: 300; line-height: 1.1; color: var(--cream);
+}
+.research-head p {
+  font-size: .94rem; line-height: 1.82; color: rgba(244,241,232,.5); align-self: end;
+}
+.areas {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; background: rgba(255,255,255,.04);
+}
+.area {
+  background: var(--ink); padding: 2.5rem;
+  border: 1px solid rgba(255,255,255,.06);
+  position: relative; overflow: hidden; transition: background .4s;
+}
+.area::before {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 3px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left; transition: transform .4s;
+}
+.area:hover { background: #0f0f18; }
+.area:hover::before { transform: scaleX(1); }
+.area-num {
+  font-family: var(--font-mono); font-size: .6rem;
+  color: var(--accent); letter-spacing: .16em;
+  margin-bottom: 1.6rem; display: block;
+}
+.area h3 {
+  font-family: var(--font-serif); font-size: 1.52rem;
+  font-weight: 400; color: var(--cream);
+  margin-bottom: .9rem; line-height: 1.25;
+}
+.area p { font-size: .83rem; line-height: 1.76; color: rgba(244,241,232,.46); }
+.area-arr {
+  display: inline-block; margin-top: 1.5rem;
+  font-size: 1.2rem; color: rgba(255,255,255,.18);
+  transition: color .3s, transform .3s;
+}
+.area:hover .area-arr { color: var(--accent); transform: translateX(6px); }
 
-  /* ═══ CERTIFICATIONS ═══ */
-  .cert-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    grid-column: 1 / -1;
-    margin-top: 2rem;
-  }
-  .cert-card {
-    border: 1px solid var(--light);
-    padding: 1.5rem;
-    font-size: 0.82rem;
-  }
-  .cert-card h5 {
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.3rem;
-    font-size: 0.82rem;
-    line-height: 1.4;
-  }
-  .cert-card span {
-    font-size: 0.72rem;
-    color: var(--mid);
-    font-family: 'Space Mono', monospace;
-  }
+/* ════════════════════════════════════════════════
+   METRICS
+════════════════════════════════════════════════ */
+#metrics {
+  background: var(--navy); padding: 5rem 4.5rem;
+  position: relative; overflow: hidden;
+}
+#metrics::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 38px 38px;
+}
+.metrics-grid {
+  max-width: 1280px; margin: 0 auto; position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(5,1fr);
+  border: 1px solid rgba(255,255,255,.1);
+}
+.met {
+  padding: 2.4rem; border-right: 1px solid rgba(255,255,255,.1);
+  text-align: center;
+}
+.met:last-child { border-right: none; }
+.met-big {
+  font-family: var(--font-serif); font-size: 3.6rem; font-weight: 600;
+  color: white; line-height: 1; display: block; margin-bottom: .5rem;
+}
+.met-big sup { font-size: 1.6rem; }
+.met-lbl {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(255,255,255,.38); line-height: 1.55;
+}
 
-  /* ═══ CONTACT ═══ */
-  #contact {
-    background: var(--ink);
-    padding: 8rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  #contact::before {
-    content: 'CONNECT';
-    position: absolute;
-    bottom: -2rem;
-    right: -1rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.02);
-    line-height: 1;
-    pointer-events: none;
-  }
-  .contact-inner {
-    max-width: 1300px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    position: relative;
-    z-index: 1;
-  }
-  .contact-left h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 300;
-    color: var(--cream);
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-  }
-  .contact-left p {
-    font-size: 0.95rem;
-    line-height: 1.8;
-    color: rgba(245,242,235,0.5);
-    margin-bottom: 3rem;
-  }
-  .contact-links { display: flex; flex-direction: column; gap: 1.2rem; }
-  .contact-link {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    color: var(--cream);
-    text-decoration: none;
-    font-size: 0.9rem;
-    padding: 1rem 1.4rem;
-    border: 1px solid rgba(255,255,255,0.08);
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .contact-link::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 0;
-    background: var(--accent);
-    transition: width 0.3s ease;
-    z-index: 0;
-  }
-  .contact-link:hover::before { width: 4px; }
-  .contact-link:hover { border-color: rgba(255,255,255,0.2); }
-  .contact-link-icon {
-    font-size: 1rem;
-    opacity: 0.6;
-    position: relative;
-    z-index: 1;
-  }
-  .contact-link-text { position: relative; z-index: 1; }
-  .contact-link-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-    display: block;
-    margin-bottom: 0.1rem;
-  }
-  .contact-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .affiliation-card {
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  .affiliation-card h4 {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.8rem;
-  }
-  .affiliation-card p {
-    color: var(--cream);
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
-  .affiliation-card p span { color: rgba(255,255,255,0.45); font-size: 0.82rem; display: block; margin-top: 0.3rem; }
-  .social-bar {
-    display: flex;
-    gap: 0.8rem;
-    margin-top: 2rem;
-  }
-  .social-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px; height: 42px;
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.05em;
-    transition: all 0.2s;
-  }
-  .social-link:hover { border-color: var(--accent); color: var(--cream); background: rgba(192,57,43,0.1); }
+/* ════════════════════════════════════════════════
+   PUBLICATIONS
+════════════════════════════════════════════════ */
+#publications { padding: 8rem 4.5rem; max-width: 1280px; margin: 0 auto; }
+.pub-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 3.5rem;
+}
+.pub-head h2 {
+  font-family: var(--font-serif); font-size: 3.2rem;
+  font-weight: 300; line-height: 1.1;
+}
+.pub-kpis { display: flex; gap: 3rem; }
+.kpi { text-align: right; }
+.kpi-val {
+  font-family: var(--font-serif); font-size: 2.4rem; font-weight: 600;
+  color: var(--navy); display: block; line-height: 1;
+}
+.kpi-lbl {
+  font-family: var(--font-mono); font-size: .56rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--mid);
+}
 
-  /* FOOTER */
-  footer {
-    background: #050508;
-    padding: 2rem 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  footer p {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    color: rgba(255,255,255,0.2);
-    letter-spacing: 0.1em;
-  }
+.pub-filters { display: flex; gap: .5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.f-btn {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: .42rem 1rem; border: 1px solid var(--light);
+  background: transparent; color: var(--mid); cursor: none; transition: all .2s;
+}
+.f-btn.on, .f-btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
 
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
+.pub-list { display: flex; flex-direction: column; }
+.pub {
+  border-top: 1px solid var(--light); padding: 1.6rem 0;
+  display: grid; grid-template-columns: 68px 1fr auto;
+  gap: 2rem; align-items: start; transition: all .2s;
+}
+.pub:last-child { border-bottom: 1px solid var(--light); }
+.pub:hover { background: var(--white); margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
+.p-yr {
+  font-family: var(--font-mono); font-size: .65rem;
+  color: var(--mid); padding-top: .2rem;
+}
+.p-body h4 { font-size: .91rem; font-weight: 500; color: var(--ink); line-height: 1.5; margin-bottom: .35rem; }
+.p-journal { font-size: .79rem; color: var(--mid); font-style: italic; margin-bottom: .5rem; }
+.p-tags { display: flex; gap: .35rem; flex-wrap: wrap; }
+.pt {
+  font-family: var(--font-mono); font-size: .54rem;
+  letter-spacing: .06em; padding: .18rem .5rem; background: var(--light); color: var(--ink);
+}
+.pt.q1 { background: rgba(24,52,95,.1); color: var(--navy); }
+.pt.hi { background: rgba(184,50,40,.1); color: var(--accent); }
+.p-doi {
+  font-family: var(--font-mono); font-size: .68rem;
+  color: var(--navy); text-decoration: none; white-space: nowrap;
+  display: flex; align-items: center; gap: .3rem;
+  padding-top: .2rem; transition: color .2s;
+}
+.p-doi:hover { color: var(--accent); }
 
-  /* Scroll reveals */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
+/* ════════════════════════════════════════════════
+   TIMELINE
+════════════════════════════════════════════════ */
+#timeline { background: var(--cream2); padding: 8rem 4.5rem; }
+.tl-wrap {
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+}
+.tl-col h2 {
+  font-family: var(--font-serif); font-size: 2.8rem;
+  font-weight: 300; margin-bottom: 3rem;
+}
+.tl-item {
+  position: relative; padding-left: 2rem; padding-bottom: 2.5rem;
+  border-left: 1px solid var(--light);
+}
+.tl-item::before {
+  content: ''; position: absolute; left: -5px; top: 7px;
+  width: 9px; height: 9px; background: var(--accent);
+  border-radius: 50%;
+  border: 2px solid var(--cream2); box-shadow: 0 0 0 1px var(--accent);
+}
+.tl-item:last-child { border-left: 1px solid transparent; }
+.tl-yr {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: .4rem; display: block;
+}
+.tl-item h4 {
+  font-size: .91rem; font-weight: 600; color: var(--ink);
+  margin-bottom: .2rem; line-height: 1.4;
+}
+.tl-item .inst { font-size: .82rem; color: var(--mid); margin-bottom: .4rem; }
+.tl-item .desc { font-size: .79rem; line-height: 1.66; color: var(--mid); }
+.badge-gold {
+  display: inline-block; background: var(--gold); color: white;
+  font-family: var(--font-mono); font-size: .54rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .22rem .6rem; margin-top: .5rem;
+}
 
-  /* MOBILE */
-  @media (max-width: 900px) {
-    nav { padding: 1.2rem 1.5rem; }
-    .nav-links { display: none; }
-    #hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 7rem 1.5rem 3rem; }
-    .hero-right { min-height: 340px; }
-    #about, #skills { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem; }
-    #research { padding: 4rem 1.5rem; }
-    .research-header { grid-template-columns: 1fr; gap: 1.5rem; }
-    .research-areas { grid-template-columns: 1fr; }
-    #publications { padding: 4rem 1.5rem; }
-    .pub-header { flex-direction: column; gap: 2rem; align-items: flex-start; }
-    .pub-metrics { gap: 2rem; }
-    .metrics-inner { grid-template-columns: repeat(2, 1fr); }
-    .metric-block { border-bottom: 1px solid rgba(255,255,255,0.1); }
-    #timeline { padding: 4rem 1.5rem; }
-    .timeline-inner { grid-template-columns: 1fr; gap: 3rem; }
-    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
-    #contact { padding: 4rem 1.5rem; }
-    .cert-row { grid-template-columns: 1fr 1fr; }
-    .about-highlights { grid-template-columns: 1fr; }
-    .pub-item { grid-template-columns: 1fr; }
-    .pub-year { display: none; }
-    footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
-    .skills-grid { grid-template-columns: 1fr; }
-  }
+/* ════════════════════════════════════════════════
+   SKILLS
+════════════════════════════════════════════════ */
+#skills {
+  padding: 8rem 4.5rem; max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start;
+}
+#skills h2 {
+  font-family: var(--font-serif); font-size: 2.8rem; font-weight: 300; line-height: 1.1;
+}
+#skills .intro { font-size: .88rem; color: var(--mid); line-height: 1.8; margin-top: 1rem; }
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.sk-group h4 {
+  font-family: var(--font-mono); font-size: .62rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1rem;
+}
+.sk-items { display: flex; flex-direction: column; gap: .48rem; }
+.sk-item {
+  display: flex; align-items: center; gap: .7rem;
+  font-size: .86rem; color: var(--ink);
+}
+.sk-item::before { content: '▸'; color: var(--navy); font-size: .65rem; }
+
+/* ════════════════════════════════════════════════
+   CONTACT
+════════════════════════════════════════════════ */
+#contact {
+  background: var(--ink); padding: 8rem 4.5rem;
+  position: relative; overflow: hidden;
+}
+#contact::before {
+  content: 'SANKALP';
+  position: absolute; bottom: -2.5rem; right: -1rem;
+  font-family: var(--font-mono); font-size: 12rem; font-weight: 700;
+  color: rgba(255,255,255,.016); letter-spacing: .1em;
+  pointer-events: none; user-select: none;
+}
+.contact-wrap {
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+  position: relative; z-index: 1;
+}
+.contact-l h2 {
+  font-family: var(--font-serif); font-size: 3.2rem;
+  font-weight: 300; color: var(--cream); line-height: 1.1; margin-bottom: 1.4rem;
+}
+.contact-l h2 em { font-style: italic; color: var(--accent); }
+.contact-l .subtext {
+  font-size: .9rem; line-height: 1.82; color: rgba(244,241,232,.44); margin-bottom: 3rem;
+}
+.c-links { display: flex; flex-direction: column; gap: .9rem; }
+.c-link {
+  display: flex; align-items: center; gap: 1rem;
+  color: var(--cream); text-decoration: none; font-size: .86rem;
+  padding: .95rem 1.4rem; border: 1px solid rgba(255,255,255,.08);
+  transition: all .3s; position: relative; overflow: hidden;
+}
+.c-link::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0; background: var(--accent); transition: width .3s; z-index: 0;
+}
+.c-link:hover::before { width: 4px; }
+.c-link:hover { border-color: rgba(255,255,255,.18); }
+.c-icon { font-size: 1rem; opacity: .5; position: relative; z-index: 1; }
+.c-text { position: relative; z-index: 1; }
+.c-lbl {
+  font-family: var(--font-mono); font-size: .5rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.28); display: block; margin-bottom: .08rem;
+}
+.contact-r { display: flex; flex-direction: column; justify-content: center; }
+.aff-card {
+  border: 1px solid rgba(255,255,255,.1); padding: 1.7rem; margin-bottom: 1.1rem;
+}
+.aff-card h4 {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: .8rem;
+}
+.aff-card p { color: var(--cream); font-size: .86rem; line-height: 1.65; }
+.aff-card p span { color: rgba(255,255,255,.36); font-size: .78rem; display: block; margin-top: .28rem; }
+.socials { display: flex; gap: .7rem; margin-top: 1.7rem; }
+.soc {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(255,255,255,.13); color: rgba(255,255,255,.4);
+  text-decoration: none; font-family: var(--font-mono); font-size: .55rem;
+  letter-spacing: .04em; transition: all .2s;
+}
+.soc:hover { border-color: var(--accent); color: var(--cream); background: rgba(184,50,40,.1); }
+
+/* ─── FOOTER ──────────────────────────────────── */
+footer {
+  background: #040408; padding: 1.8rem 4.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+footer p {
+  font-family: var(--font-mono); font-size: .56rem;
+  color: rgba(255,255,255,.15); letter-spacing: .09em;
+}
+
+/* ─── MOBILE ──────────────────────────────────── */
+@media (max-width: 920px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  #hero { grid-template-columns: 1fr; }
+  .hero-l { padding: 7rem 1.5rem 3rem; }
+  .hero-r { min-height: 300px; }
+  .sankalp-wrap, #about, #skills, .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
+  #sankalp, #research, #publications, #timeline, #contact, #skills { padding: 5rem 1.5rem; }
+  .research-head { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+  .areas, .tl-wrap { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: repeat(2,1fr); }
+  .met { border-bottom: 1px solid rgba(255,255,255,.07); }
+  .pub-head { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+  .highlights { grid-template-columns: 1fr; }
+  .pub { grid-template-columns: 1fr; }
+  .p-yr { display: none; }
+  .skills-grid { grid-template-columns: 1fr; }
+  #sankalp::after { font-size: 7rem; right: 0; }
+  footer { flex-direction: column; gap: .4rem; text-align: center; padding: 1.5rem; }
+}
 </style>
 </head>
 <body>
 
-<!-- Custom Cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor"      id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">Dr. <span>S.</span> Biswas</a>
+<!-- ══════════ NAV ══════════ -->
+<nav id="topnav">
+  <a href="#" class="nav-brand">
+    <span class="nav-brand-name">
+      <span class="nc-s">S</span><span class="nc-a">A</span><span class="nc-n">N</span><span class="nc-k">K</span><span class="nc-a2">A</span><span class="nc-lp">LP</span>
+      <span class="nav-lab">&nbsp;Lab</span>
+    </span>
+    <span class="nav-brand-sub">Dr. Saptadeep Biswas · GITAM University</span>
+  </a>
   <ul class="nav-links">
+    <li><a href="#sankalp">Lab</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#research">Research</a></li>
     <li><a href="#publications">Publications</a></li>
@@ -1050,89 +808,161 @@
   </ul>
 </nav>
 
-<!-- ═══ HERO ═══ -->
+<!-- ══════════ HERO ══════════ -->
 <section id="hero">
-  <div class="hero-left">
+  <div class="hero-l">
     <span class="hero-eyebrow">● DST INSPIRE Fellow &nbsp;·&nbsp; GITAM University, India</span>
+
     <h1 class="hero-name">Dr. Saptadeep<br><em>Biswas</em></h1>
-    <p class="hero-title">
+
+    <!-- SANKALP Lab name — prominently displayed -->
+    <div class="hero-lab-row">
+      <span class="hl-word">
+        <span class="hl-s">S</span><span class="hl-a">A</span><span class="hl-n">N</span><span class="hl-k">K</span><span class="hl-a2">A</span><span class="hl-lp">LP</span>
+      </span>
+      <span class="hl-sep">Lab</span>
+      <span class="hl-hindi">संकल्प</span>
+    </div>
+
+    <p class="hero-position">
       <strong>Assistant Professor</strong> · Operations &amp; Supply Chain<br>
       GITAM School of Business, Visakhapatnam
     </p>
+
     <p class="hero-tagline">
-      "Designing intelligent systems where mathematics meets human resilience."
+      "A solemn vow to transform mathematics into a shield for human lives."
     </p>
+
     <div class="hero-ctas">
-      <a href="https://scholar.google.com/citations?user=qALFk9wAAAAJ" target="_blank" class="btn-primary">Google Scholar ↗</a>
-      <a href="#publications" class="btn-outline">View Publications</a>
+      <a href="#sankalp" class="btn btn-dark"><span>Explore SANKALP Lab</span></a>
+      <a href="#publications" class="btn btn-ghost">Publications</a>
     </div>
   </div>
-  <div class="hero-right">
-    <div class="grid-lines"></div>
-    <div class="big-letter">AI</div>
+
+  <div class="hero-r">
+    <div class="grid-bg"></div>
+    <div class="hero-wm">
+      <span class="hero-wm-en">SANKALP</span>
+      <span class="hero-wm-hi">संकल्प</span>
+    </div>
     <div class="hero-badge">
-      <div class="badge-inner">
+      <div class="badge-pill">
         <div class="badge-dot"></div>
         Open to Collaboration
       </div>
     </div>
-    <div class="hero-visual-text">
+    <div class="hero-stats-wrap">
       <div class="hero-stats">
-        <div class="stat-card">
-          <div class="stat-number">250<span>+</span></div>
-          <div class="stat-label">Total Citations</div>
+        <div class="stat">
+          <div class="stat-num">250<sup>+</sup></div>
+          <div class="stat-lbl">Total Citations</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">8</div>
-          <div class="stat-label">h-index</div>
+        <div class="stat">
+          <div class="stat-num">8</div>
+          <div class="stat-lbl">h-index</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">16<span>+</span></div>
-          <div class="stat-label">Journal Papers</div>
+        <div class="stat">
+          <div class="stat-num">16<sup>+</sup></div>
+          <div class="stat-lbl">Journal Papers</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">132<span>+</span></div>
-          <div class="stat-label">Peer Reviews</div>
+        <div class="stat">
+          <div class="stat-num">138</div>
+          <div class="stat-lbl">Peer Reviews</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ ABOUT ═══ -->
+<!-- ══════════ SANKALP LAB ══════════ -->
+<section id="sankalp">
+  <div class="sankalp-wrap">
+
+    <!-- Left -->
+    <div class="reveal">
+      <div class="sk-logo">
+        <span class="sk-letters">
+          <span class="sk-s">S</span><span class="sk-a">A</span><span class="sk-n">N</span><span class="sk-k">K</span><span class="sk-a2">A</span><span class="sk-lp">LP</span>
+        </span>
+        <span class="sk-tag">— Laboratory</span>
+        <span class="sk-hindi">संकल्प</span>
+      </div>
+      <div class="sk-meaning">
+        <span class="sk-word">Sankalp (संकल्प)</span>
+        <p>A profound Sanskrit word meaning a solemn vow, a resolve, a purposeful intention — the deepest form of commitment to a cause. It captures the spirit of using science to protect lives and serve humanity.</p>
+      </div>
+    </div>
+
+    <!-- Right -->
+    <div class="reveal d2">
+      <span class="sk-acronym-label">Full Acronym</span>
+      <div class="sk-row">
+        <span class="sk-letter skl-s">S</span>
+        <span class="sk-def"><strong>Systems</strong> — Intelligent systems engineered for real-world humanitarian impact</span>
+      </div>
+      <div class="sk-row">
+        <span class="sk-letter skl-a">A</span>
+        <span class="sk-def"><strong>Algorithms</strong> — Novel evolutionary &amp; metaheuristic optimization algorithms</span>
+      </div>
+      <div class="sk-row">
+        <span class="sk-letter skl-n">N</span>
+        <span class="sk-def"><strong>Nature-inspired</strong> — Bio-inspired computation, swarm intelligence &amp; AI</span>
+      </div>
+      <div class="sk-row">
+        <span class="sk-letter skl-k">K</span>
+        <span class="sk-def"><strong>Knowledge</strong> — Data-driven knowledge for disaster risk decision support</span>
+      </div>
+      <div class="sk-row">
+        <span class="sk-letter skl-a2">A</span>
+        <span class="sk-def"><strong>Adaptive</strong> — Adaptive logistics, supply chain resilience &amp; planning</span>
+      </div>
+      <div class="sk-row">
+        <span class="sk-letter skl-lp">LP</span>
+        <span class="sk-def"><strong>Logistics &amp; Prediction</strong> — Humanitarian logistics &amp; AI-driven forecasting</span>
+      </div>
+      <div class="sk-pledge">
+        <p>"We do not merely study disasters — we make a vow to prevent them. Every algorithm we build, every model we train, carries the weight of lives depending on it."</p>
+        <cite>— Dr. Saptadeep Biswas, Founder, SANKALP Lab</cite>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ ABOUT ══════════ -->
 <section id="about">
-  <div class="about-left reveal">
-    <span class="section-label">About</span>
+  <div class="about-l reveal">
+    <span class="label">About</span>
     <h2>From Equations<br>to Impact</h2>
     <div class="divider"></div>
     <p>Dr. Saptadeep Biswas is a dedicated researcher and academician with a Ph.D. in Mathematics from NIT Agartala (2021–2025), awarded under the prestigious <strong>DST INSPIRE Fellowship</strong>.</p>
-    <p>His doctoral work — <em>A Study on Intelligent Disaster Management: Implementing AI-based Prediction and Logistics Optimization Techniques</em> — bridges artificial intelligence and real-world humanitarian operations.</p>
-    <p>Currently serving as Assistant Professor at GITAM School of Business, he brings deep expertise in evolutionary computation, multi-objective optimization, and supply chain resilience.</p>
+    <p>His doctoral thesis — <em>A Study on Intelligent Disaster Management: Implementing AI-based Prediction and Logistics Optimization Techniques</em> — bridges artificial intelligence and real-world humanitarian operations.</p>
+    <p>Currently serving as Assistant Professor at GITAM School of Business, he leads the <strong>SANKALP Lab</strong>, bringing deep expertise in evolutionary computation, multi-objective optimization, and supply chain resilience.</p>
   </div>
-  <div class="about-right">
-    <div class="about-highlights reveal reveal-delay-1">
-      <div class="highlight-item">
-        <span class="highlight-icon">🤖</span>
+  <div>
+    <div class="highlights reveal d1">
+      <div class="hl-card">
+        <span class="hl-icon">🤖</span>
         <h4>AI &amp; Machine Learning</h4>
         <p>Neural networks, forecasting models, earthquake prediction, flood risk mapping</p>
       </div>
-      <div class="highlight-item">
-        <span class="highlight-icon">🔬</span>
+      <div class="hl-card">
+        <span class="hl-icon">🔬</span>
         <h4>Evolutionary Computation</h4>
         <p>Novel hybrid metaheuristics: Gazelle, Crayfish, Coati, Marine Predator optimizers</p>
       </div>
-      <div class="highlight-item">
-        <span class="highlight-icon">🚁</span>
+      <div class="hl-card">
+        <span class="hl-icon">🚁</span>
         <h4>Humanitarian Logistics</h4>
         <p>Drone-based relief operations, UAV landing zone selection, disaster response</p>
       </div>
-      <div class="highlight-item">
-        <span class="highlight-icon">📦</span>
+      <div class="hl-card">
+        <span class="hl-icon">📦</span>
         <h4>Supply Chain</h4>
         <p>Agro-food networks, sustainable logistics, multi-objective optimization</p>
       </div>
     </div>
-    <div class="expertise-tags reveal reveal-delay-2">
+    <div class="tags reveal d2">
       <span class="tag">Operations Research</span>
       <span class="tag">Fuzzy Decision-Making</span>
       <span class="tag">Disaster Risk Reduction</span>
@@ -1144,356 +974,344 @@
   </div>
 </section>
 
-<!-- ═══ RESEARCH FOCUS ═══ -->
+<!-- ══════════ RESEARCH ══════════ -->
 <section id="research">
-  <div class="research-inner">
-    <div class="research-header reveal">
+  <div class="research-wrap">
+    <div class="research-head reveal">
       <div>
-        <span class="section-label" style="color:rgba(245,242,235,0.4)">Research Focus</span>
-        <h2>Three Pillars of<br>Scholarly Work</h2>
+        <span class="label label-light">Research Focus</span>
+        <h2>Three Pillars of<br>SANKALP</h2>
       </div>
-      <p>Publishing consistently in Q1 SCIE journals with impact factors up to 13.9, Dr. Biswas' research operates at the intersection of intelligent algorithms, disaster management, and optimization science.</p>
+      <p>Publishing consistently in Q1 SCIE journals with impact factors up to 13.9, the SANKALP Lab operates at the intersection of intelligent algorithms, disaster management, and optimization science — a vow made real through peer-reviewed scholarship.</p>
     </div>
-    <div class="research-areas">
-      <div class="area-card reveal reveal-delay-1">
-        <span class="area-number">01 ——</span>
+    <div class="areas">
+      <div class="area reveal d1">
+        <span class="area-num">01 ——</span>
         <h3>Intelligent Disaster Management</h3>
-        <p>AI-driven frameworks for earthquake relief demand forecasting, flood prediction, seismic vulnerability mapping, and community resilience. Case studies in Türkiye and India. Published in IJDRR (Q1, IF 4.5).</p>
-        <span class="area-arrow">→</span>
+        <p>AI-driven frameworks for earthquake relief demand forecasting, flood prediction, seismic vulnerability mapping, and community resilience. Case studies in Türkiye and India. IJDRR (Q1, IF 4.5).</p>
+        <span class="area-arr">→</span>
       </div>
-      <div class="area-card reveal reveal-delay-2">
-        <span class="area-number">02 ——</span>
+      <div class="area reveal d2">
+        <span class="area-num">02 ——</span>
         <h3>Metaheuristic Optimization</h3>
-        <p>Designing and benchmarking novel hybrid evolutionary algorithms — integrating Differential Evolution with Gazelle, Coati, Crayfish, Grey Wolf optimizers for global and constrained engineering problems. Published in CMAME (Q1, IF 7.3) and AI Review (Q1, IF 13.9).</p>
-        <span class="area-arrow">→</span>
+        <p>Designing novel hybrid evolutionary algorithms integrating Differential Evolution with Gazelle, Coati, Crayfish, and Grey Wolf optimizers for global and constrained engineering problems. CMAME (Q1, IF 7.3), AI Review (Q1, IF 13.9).</p>
+        <span class="area-arr">→</span>
       </div>
-      <div class="area-card reveal reveal-delay-3">
-        <span class="area-number">03 ——</span>
+      <div class="area reveal d3">
+        <span class="area-num">03 ——</span>
         <h3>Sustainable Supply Chains</h3>
-        <p>Multi-objective optimization of agro-food networks, humanitarian logistics design using spherical fuzzy methodology, resource allocation in quarantine centers, and transportation problems. Published in JCP (Q1, IF 10.0) and ANOR (Q1, IF 4.5).</p>
-        <span class="area-arrow">→</span>
+        <p>Multi-objective optimization of agro-food networks, humanitarian logistics using spherical fuzzy methodology, and resource allocation in quarantine centers. JCP (Q1, IF 10.0), ANOR (Q1, IF 4.5).</p>
+        <span class="area-arr">→</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ METRICS BANNER ═══ -->
+<!-- ══════════ METRICS ══════════ -->
 <section id="metrics">
-  <div class="metrics-inner">
-    <div class="metric-block reveal">
-      <span class="metric-big">250<sup>+</sup></span>
-      <span class="metric-desc">Google Scholar<br>Citations</span>
+  <div class="metrics-grid">
+    <div class="met reveal">
+      <span class="met-big">250<sup>+</sup></span>
+      <span class="met-lbl">Google Scholar<br>Citations</span>
     </div>
-    <div class="metric-block reveal reveal-delay-1">
-      <span class="metric-big">8</span>
-      <span class="metric-desc">h-index<br>(All Time)</span>
+    <div class="met reveal d1">
+      <span class="met-big">8</span>
+      <span class="met-lbl">h-index<br>(All Time)</span>
     </div>
-    <div class="metric-block reveal reveal-delay-2">
-      <span class="metric-big">8</span>
-      <span class="metric-desc">i10-index</span>
+    <div class="met reveal d2">
+      <span class="met-big">8</span>
+      <span class="met-lbl">i10-index</span>
     </div>
-    <div class="metric-block reveal reveal-delay-3">
-      <span class="metric-big">138</span>
-      <span class="metric-desc">Peer Reviews<br>Completed</span>
+    <div class="met reveal d3">
+      <span class="met-big">138</span>
+      <span class="met-lbl">Peer Reviews<br>Completed</span>
     </div>
-    <div class="metric-block reveal reveal-delay-4">
-      <span class="metric-big">20<sup>+</sup></span>
-      <span class="metric-desc">International<br>Journals Reviewed</span>
+    <div class="met reveal d4">
+      <span class="met-big">20<sup>+</sup></span>
+      <span class="met-lbl">International<br>Journals Reviewed</span>
     </div>
   </div>
 </section>
 
-<!-- ═══ PUBLICATIONS ═══ -->
+<!-- ══════════ PUBLICATIONS ══════════ -->
 <section id="publications">
-  <div class="pub-header reveal">
+  <div class="pub-head reveal">
     <div>
-      <span class="section-label">Selected Publications</span>
+      <span class="label">Selected Publications</span>
       <h2>Journal &amp;<br>Conference Work</h2>
     </div>
-    <div class="pub-metrics">
-      <div class="metric">
-        <span class="metric-value">75</span>
-        <span class="metric-label">Top Citations<br>(Single Paper)</span>
+    <div class="pub-kpis">
+      <div class="kpi">
+        <span class="kpi-val">75</span>
+        <span class="kpi-lbl">Top Citations<br>(Single Paper)</span>
       </div>
-      <div class="metric">
-        <span class="metric-value">13.9</span>
-        <span class="metric-label">Highest<br>Impact Factor</span>
+      <div class="kpi">
+        <span class="kpi-val">13.9</span>
+        <span class="kpi-lbl">Highest<br>Impact Factor</span>
       </div>
     </div>
   </div>
 
-  <div class="pub-filter reveal">
-    <button class="filter-btn active" onclick="filterPubs('all', this)">All</button>
-    <button class="filter-btn" onclick="filterPubs('q1', this)">Q1 Journals</button>
-    <button class="filter-btn" onclick="filterPubs('disaster', this)">Disaster Mgmt</button>
-    <button class="filter-btn" onclick="filterPubs('optimization', this)">Optimization</button>
+  <div class="pub-filters reveal">
+    <button class="f-btn on"  onclick="fp('all',this)">All</button>
+    <button class="f-btn"     onclick="fp('q1',this)">Q1 Journals</button>
+    <button class="f-btn"     onclick="fp('disaster',this)">Disaster Mgmt</button>
+    <button class="f-btn"     onclick="fp('optimization',this)">Optimization</button>
   </div>
 
   <div class="pub-list" id="pubList">
 
-    <div class="pub-item" data-cat="q1 optimization">
-      <span class="pub-year">2025</span>
-      <div class="pub-content">
+    <div class="pub" data-cat="q1 optimization">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
         <h4>Integrating Differential Evolution into Gazelle Optimization for advanced global optimization and engineering applications</h4>
-        <p class="pub-journal">Computer Methods in Applied Mechanics and Engineering, 434, 117588</p>
-        <div class="pub-tags">
-          <span class="pub-tag q1">Q1 SCIE</span>
-          <span class="pub-tag hot">IF 7.3</span>
-          <span class="pub-tag">75 Citations</span>
+        <p class="p-journal">Computer Methods in Applied Mechanics and Engineering, 434, 117588</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 7.3</span><span class="pt">75 Citations</span>
         </div>
       </div>
-      <a href="https://doi.org/10.1016/j.cma.2024.117588" target="_blank" class="pub-link">DOI ↗</a>
+      <a href="https://doi.org/10.1016/j.cma.2024.117588" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
-    <div class="pub-item" data-cat="q1 optimization">
-      <span class="pub-year">2025</span>
-      <div class="pub-content">
+    <div class="pub" data-cat="q1 optimization">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
         <h4>Enhanced crayfish optimization algorithm with differential evolution's mutation and crossover strategies for global optimization</h4>
-        <p class="pub-journal">Artificial Intelligence Review, 58(3)</p>
-        <div class="pub-tags">
-          <span class="pub-tag q1">Q1 SCIE</span>
-          <span class="pub-tag hot">IF 13.9</span>
-          <span class="pub-tag">30 Citations</span>
+        <p class="p-journal">Artificial Intelligence Review, 58(3)</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 13.9</span><span class="pt">30 Citations</span>
         </div>
       </div>
-      <a href="https://doi.org/10.1007/s10462-024-11069-7" target="_blank" class="pub-link">DOI ↗</a>
+      <a href="https://doi.org/10.1007/s10462-024-11069-7" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
-    <div class="pub-item" data-cat="q1 disaster">
-      <span class="pub-year">2025</span>
-      <div class="pub-content">
+    <div class="pub" data-cat="q1 disaster">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
         <h4>Emergency medical facility site selection in drone-based relief operations using an enhanced T-spherical fuzzy Frank combined compromise solution method</h4>
-        <p class="pub-journal">Engineering Applications of Artificial Intelligence, 161, 112140</p>
-        <div class="pub-tags">
-          <span class="pub-tag q1">Q1 SCIE</span>
-          <span class="pub-tag hot">IF 8.0</span>
+        <p class="p-journal">Engineering Applications of Artificial Intelligence, 161, 112140</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 8.0</span>
         </div>
       </div>
-      <a href="https://doi.org/10.1016/j.engappai.2025.112140" target="_blank" class="pub-link">DOI ↗</a>
+      <a href="https://doi.org/10.1016/j.engappai.2025.112140" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
-    <div class="pub-item" data-cat="q1 disaster">
-      <span class="pub-year">2025</span>
-      <div class="pub-content">
+    <div class="pub" data-cat="q1 disaster">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
         <h4>Calibrated geo-social link prediction for household–school connectivity in community resilience</h4>
-        <p class="pub-journal">International Journal of Disaster Risk Reduction, 131, 105872</p>
-        <div class="pub-tags">
-          <span class="pub-tag q1">Q1 SCIE</span>
-          <span class="pub-tag hot">IF 4.5</span>
-          <span class="pub-tag">ABDC: A</span>
+        <p class="p-journal">International Journal of Disaster Risk Reduction, 131, 105872</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">ABDC: A</span>
         </div>
       </div>
-      <a href="https://doi.org/10.1016/j.ijdrr.2025.105872" target="_blank" class="pub-link">DOI ↗</a>
+      <a href="https://doi.org/10.1016/j.ijdrr.2025.105872" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
-    <div class="pub-item" data-cat="q1 optimization">
-      <span class="pub-year">2025</span>
-      <div class="pub-content">
+    <div class="pub" data-cat="q1 optimization">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
         <h4>A multi-objective optimization approach for resource allocation and transportation planning in institutional quarantine centres</h4>
-        <p class="pub-journal">Annals of Operations Research, 346, 781–825</p>
-        <div class="pub-tags">
-          <span class="pub-tag q1">Q1 SCIE</span>
-          <span class="pub-tag hot">IF 4.5</span>
-          <span class="pub-tag">ABDC: A</span>
-          <span class="pub-tag">15 Citations</span>
+        <p class="p-journal">Annals of Operations Research, 346, 781–825</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">ABDC: A</span><span class="pt">15 Citations</span>
         </div>
       </div>
-      <a href="https://doi.org/10.1007/s10479-024-06072-8" target="_blank" class="pub-link">DOI ↗</a>
+      <a href="https://doi.org/10.1007/s10479-024-06072-8" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
-    <div class="pub-item" data-cat="q1 disaster">
-      <span class="pub-year">2024</span>
-      <div class="pub-content">
+    <div class="pub" data-cat="q1 disaster">
+      <span class="p-yr">2024</span>
+      <div class="p-body">
         <h4>An AI-based framework for earthquake relief demand forecasting: A case study in Türkiye</h4>
-        <p class="pub-journal">International Journal of Disaster Risk Reduction, 102, 104287</p>
-        <div class="pub-tags">
-          <span class="pub-tag q1">Q1 SCIE</span>
-          <span class="pub-tag hot">IF 4.5</span>
-          <span class="pub-tag">32 Citations</span>
-          <span class="pub-tag">ABDC: A</span>
+        <p class="p-journal">International Journal of Disaster Risk Reduction, 102, 104287</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">32 Citations</span><span class="pt">ABDC: A</span>
         </div>
       </div>
-      <a href="https://doi.org/10.1016/j.ijdrr.2024.104287" target="_blank" class="pub-link">DOI ↗</a>
+      <a href="https://doi.org/10.1016/j.ijdrr.2024.104287" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
-    <div class="pub-item" data-cat="q1 optimization">
-      <span class="pub-year">2023</span>
-      <div class="pub-content">
+    <div class="pub" data-cat="q1 optimization">
+      <span class="p-yr">2023</span>
+      <div class="p-body">
         <h4>Multi-objective optimization of agro-food supply chain networking problem integrating economic viability and environmental sustainability</h4>
-        <p class="pub-journal">Journal of Cleaner Production, 421, 138294</p>
-        <div class="pub-tags">
-          <span class="pub-tag q1">Q1 SCIE</span>
-          <span class="pub-tag hot">IF 10.0</span>
-          <span class="pub-tag">35 Citations</span>
-          <span class="pub-tag">ABDC: A</span>
+        <p class="p-journal">Journal of Cleaner Production, 421, 138294</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 10.0</span><span class="pt">35 Citations</span><span class="pt">ABDC: A</span>
         </div>
       </div>
-      <a href="https://doi.org/10.1016/j.jclepro.2023.138294" target="_blank" class="pub-link">DOI ↗</a>
+      <a href="https://doi.org/10.1016/j.jclepro.2023.138294" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
-    <div class="pub-item" data-cat="optimization">
-      <span class="pub-year">2024</span>
-      <div class="pub-content">
+    <div class="pub" data-cat="optimization">
+      <span class="p-yr">2024</span>
+      <div class="p-body">
         <h4>Enhanced prairie dog optimization with Levy flight and dynamic opposition-based learning for global optimization and engineering design problems</h4>
-        <p class="pub-journal">Neural Computing and Applications, 36(19), 11137–11170</p>
-        <div class="pub-tags">
-          <span class="pub-tag q1">Q1</span>
-          <span class="pub-tag">24 Citations</span>
+        <p class="p-journal">Neural Computing and Applications, 36(19), 11137–11170</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1</span><span class="pt">24 Citations</span>
         </div>
       </div>
-      <a href="https://doi.org/10.1007/s00521-024-09648-4" target="_blank" class="pub-link">DOI ↗</a>
+      <a href="https://doi.org/10.1007/s00521-024-09648-4" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
   </div>
 
-  <div style="margin-top:3rem; display:flex; gap:1rem;" class="reveal">
-    <a href="https://scholar.google.com/citations?user=qALFk9wAAAAJ" target="_blank" class="btn-primary">View All on Google Scholar ↗</a>
-    <a href="https://orcid.org/0000-0002-2092-5487" target="_blank" class="btn-outline">ORCID Profile</a>
+  <div style="margin-top:3rem;display:flex;gap:1rem;flex-wrap:wrap" class="reveal">
+    <a href="https://scholar.google.com/citations?user=qALFk9wAAAAJ" target="_blank" class="btn btn-dark"><span>View All on Google Scholar ↗</span></a>
+    <a href="https://orcid.org/0000-0002-2092-5487" target="_blank" class="btn btn-ghost">ORCID Profile</a>
   </div>
 </section>
 
-<!-- ═══ TIMELINE ═══ -->
+<!-- ══════════ TIMELINE ══════════ -->
 <section id="timeline">
-  <div class="timeline-inner">
+  <div class="tl-wrap">
+    <!-- Education -->
     <div>
-      <span class="section-label">Education</span>
+      <span class="label">Education</span>
       <h2 class="reveal">Academic<br>Foundation</h2>
       <br>
-      <div class="timeline-item reveal reveal-delay-1">
-        <span class="timeline-year">2021 – 2025</span>
+      <div class="tl-item reveal d1">
+        <span class="tl-yr">2021 – 2025</span>
         <h4>Ph.D. in Mathematics</h4>
-        <p class="inst">NIT Agartala, India · Supervisor: Prof. Uttam Kumar Bera</p>
-        <p class="desc">Thesis: A Study on Intelligent Disaster Management: Implementing AI-based Prediction and Logistics Optimization Techniques. Ph.D. awarded 19 June 2025.</p>
-        <span class="fellowship-badge">🏅 DST INSPIRE Fellow</span>
+        <p class="inst">NIT Agartala · Supervisor: Prof. Uttam Kumar Bera</p>
+        <p class="desc">Thesis: Intelligent Disaster Management — AI-based Prediction and Logistics Optimization. Ph.D. awarded 19 June 2025.</p>
+        <span class="badge-gold">🏅 DST INSPIRE Fellow</span>
       </div>
-      <div class="timeline-item reveal reveal-delay-2">
-        <span class="timeline-year">2013 – 2018</span>
+      <div class="tl-item reveal d2">
+        <span class="tl-yr">2013 – 2018</span>
         <h4>BS-MS Dual Degree in Mathematics</h4>
         <p class="inst">NIT Agartala · CGPA: 7.87/10</p>
-        <p class="desc">Foundation in pure and applied mathematics with summer internships at IIT Guwahati, IIT Patna, IIT Madras, Tezpur University, and NISER.</p>
-        <span class="fellowship-badge">🏅 INSPIRE SHE Scholar</span>
+        <p class="desc">Internships at IIT Guwahati, IIT Patna, IIT Madras, Tezpur University, and NISER in Optimization and Theoretical Mathematics.</p>
+        <span class="badge-gold">🏅 INSPIRE SHE Scholar</span>
       </div>
-      <div class="timeline-item reveal reveal-delay-3">
-        <span class="timeline-year">2018 – 2020</span>
+      <div class="tl-item reveal d3">
+        <span class="tl-yr">2018 – 2020</span>
         <h4>B.Ed. Programme</h4>
         <p class="inst">IASE, Tripura University · CGPA: 9.16/10</p>
         <p class="desc">Professional teacher education with distinction.</p>
       </div>
     </div>
+    <!-- Experience -->
     <div>
-      <span class="section-label">Experience</span>
+      <span class="label">Experience</span>
       <h2 class="reveal">Career<br>Trajectory</h2>
       <br>
-      <div class="timeline-item reveal reveal-delay-1">
-        <span class="timeline-year">Jul 2025 – Present</span>
+      <div class="tl-item reveal d1">
+        <span class="tl-yr">Jul 2025 – Present</span>
         <h4>Assistant Professor</h4>
-        <p class="inst">Dept. of Operations &amp; Supply Chain, GITAM School of Business, Visakhapatnam</p>
-        <p class="desc">Teaching and research in Operations Research, AI-driven supply chain management, and optimization methods.</p>
+        <p class="inst">Dept. of Operations &amp; Supply Chain · GITAM School of Business, Visakhapatnam</p>
+        <p class="desc">Teaching and research in Operations Research and AI-driven supply chain management. Founder of SANKALP Lab.</p>
       </div>
-      <div class="timeline-item reveal reveal-delay-2">
-        <span class="timeline-year">Mar 2023 – Jun 2025</span>
+      <div class="tl-item reveal d2">
+        <span class="tl-yr">Mar 2023 – Jun 2025</span>
         <h4>Senior Research Fellow</h4>
         <p class="inst">NIT Agartala · DST INSPIRE Project</p>
-        <p class="desc">Led research on AI-based disaster management, evolutionary algorithms, and multi-objective supply chain optimization. Published 10+ SCIE-indexed papers.</p>
+        <p class="desc">Led research on AI-based disaster management and evolutionary algorithms. Published 10+ SCIE-indexed papers.</p>
       </div>
-      <div class="timeline-item reveal reveal-delay-3">
-        <span class="timeline-year">Feb 2021 – Mar 2023</span>
+      <div class="tl-item reveal d3">
+        <span class="tl-yr">Feb 2021 – Mar 2023</span>
         <h4>Junior Research Fellow</h4>
         <p class="inst">NIT Agartala</p>
-        <p class="desc">Initiated research on stochastic transportation, fuzzy decision-making, and humanitarian logistics design models.</p>
+        <p class="desc">Initiated research on stochastic transportation, fuzzy decision-making, and humanitarian logistics.</p>
       </div>
-      <div class="timeline-item reveal reveal-delay-4">
-        <span class="timeline-year">2022 – 2024</span>
+      <div class="tl-item reveal d4">
+        <span class="tl-yr">2022 – 2024</span>
         <h4>Teaching Assistant</h4>
         <p class="inst">NIT Agartala</p>
-        <p class="desc">Conducted tutorials and evaluations for undergraduate courses in Mathematics and Optimization.</p>
+        <p class="desc">Tutorials and evaluations for undergraduate Mathematics and Optimization courses.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ SKILLS ═══ -->
+<!-- ══════════ SKILLS ══════════ -->
 <section id="skills">
   <div class="reveal">
-    <span class="section-label">Technical Skills</span>
+    <span class="label">Technical Skills</span>
     <h2>Tools &amp;<br>Proficiency</h2>
     <div class="divider"></div>
-    <p style="font-size:0.9rem;color:var(--mid);line-height:1.8;margin-top:1rem;">Proficient across programming, optimization solvers, ML libraries, and scientific computing tools used in cutting-edge operations research and AI applications.</p>
+    <p class="intro">Proficient across programming, optimization solvers, ML libraries, and scientific computing tools used in cutting-edge operations research and AI applications.</p>
   </div>
   <div class="skills-grid">
-    <div class="skill-group reveal reveal-delay-1">
+    <div class="sk-group reveal d1">
       <h4>Programming</h4>
-      <div class="skill-items">
-        <div class="skill-item">Python</div>
-        <div class="skill-item">MATLAB</div>
-        <div class="skill-item">LaTeX</div>
+      <div class="sk-items">
+        <div class="sk-item">Python</div>
+        <div class="sk-item">MATLAB</div>
+        <div class="sk-item">LaTeX</div>
       </div>
     </div>
-    <div class="skill-group reveal reveal-delay-2">
+    <div class="sk-group reveal d2">
       <h4>Optimization Tools</h4>
-      <div class="skill-items">
-        <div class="skill-item">Gurobi</div>
-        <div class="skill-item">CPLEX</div>
-        <div class="skill-item">LINGO</div>
-        <div class="skill-item">PYMOO / PYOMO</div>
+      <div class="sk-items">
+        <div class="sk-item">Gurobi</div>
+        <div class="sk-item">CPLEX</div>
+        <div class="sk-item">LINGO</div>
+        <div class="sk-item">PYMOO / PYOMO</div>
       </div>
     </div>
-    <div class="skill-group reveal reveal-delay-3">
+    <div class="sk-group reveal d3">
       <h4>ML / Data Science</h4>
-      <div class="skill-items">
-        <div class="skill-item">Scikit-Learn</div>
-        <div class="skill-item">Pandas</div>
-        <div class="skill-item">Matplotlib / Seaborn</div>
+      <div class="sk-items">
+        <div class="sk-item">Scikit-Learn</div>
+        <div class="sk-item">Pandas</div>
+        <div class="sk-item">Matplotlib / Seaborn</div>
       </div>
     </div>
-    <div class="skill-group reveal reveal-delay-4">
+    <div class="sk-group reveal d4">
       <h4>Memberships</h4>
-      <div class="skill-items">
-        <div class="skill-item">IEEE (Kolkata Section)</div>
-        <div class="skill-item">ORSI (Lifetime Member)</div>
-        <div class="skill-item">SCRS, New Delhi</div>
+      <div class="sk-items">
+        <div class="sk-item">IEEE (Kolkata Section)</div>
+        <div class="sk-item">ORSI (Lifetime Member)</div>
+        <div class="sk-item">SCRS, New Delhi</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ CONTACT ═══ -->
+<!-- ══════════ CONTACT ══════════ -->
 <section id="contact">
-  <div class="contact-inner">
-    <div class="contact-left reveal">
-      <span class="section-label" style="color:rgba(245,242,235,0.4)">Get In Touch</span>
-      <h2>Let's Build<br>Something <em style="font-style:italic;color:var(--accent)">Together</em></h2>
-      <p>Open to research collaborations, joint publications, and academic discussions in AI, optimization, disaster management, and supply chain resilience.</p>
-      <div class="contact-links">
-        <a href="mailto:sbiswas3@gitam.edu" class="contact-link">
-          <span class="contact-link-icon">✉</span>
-          <div class="contact-link-text">
-            <span class="contact-link-label">Institutional Email</span>
+  <div class="contact-wrap">
+    <div class="contact-l reveal">
+      <span class="label label-light">Get In Touch</span>
+      <h2>Join the<br><em>SANKALP</em> Mission</h2>
+      <p class="subtext">Open to research collaborations, joint publications, and academic partnerships in AI, optimization, disaster management, and supply chain resilience. Every great vow begins with a conversation.</p>
+      <div class="c-links">
+        <a href="mailto:sbiswas3@gitam.edu" class="c-link">
+          <span class="c-icon">✉</span>
+          <div class="c-text">
+            <span class="c-lbl">Institutional Email</span>
             sbiswas3@gitam.edu
           </div>
         </a>
-        <a href="mailto:saptadeepbiswas7@gmail.com" class="contact-link">
-          <span class="contact-link-icon">✉</span>
-          <div class="contact-link-text">
-            <span class="contact-link-label">Personal Email</span>
+        <a href="mailto:saptadeepbiswas7@gmail.com" class="c-link">
+          <span class="c-icon">✉</span>
+          <div class="c-text">
+            <span class="c-lbl">Personal Email</span>
             saptadeepbiswas7@gmail.com
           </div>
         </a>
-        <a href="tel:+918794353313" class="contact-link">
-          <span class="contact-link-icon">📞</span>
-          <div class="contact-link-text">
-            <span class="contact-link-label">Phone</span>
+        <a href="tel:+918794353313" class="c-link">
+          <span class="c-icon">📞</span>
+          <div class="c-text">
+            <span class="c-lbl">Phone</span>
             +91 8794353313
           </div>
         </a>
       </div>
     </div>
-    <div class="contact-right reveal reveal-delay-1">
-      <div class="affiliation-card">
+
+    <div class="contact-r reveal d2">
+      <div class="aff-card">
         <h4>Current Position</h4>
-        <p>Assistant Professor · Operations &amp; Supply Chain<br>GITAM School of Business<br>GITAM (Deemed to be University)<span>Visakhapatnam, Andhra Pradesh, India</span></p>
+        <p>Assistant Professor · Operations &amp; Supply Chain<br>GITAM School of Business<br>GITAM (Deemed to be University)
+          <span>Visakhapatnam, Andhra Pradesh, India</span>
+        </p>
       </div>
-      <div class="affiliation-card">
+      <div class="aff-card">
         <h4>Researcher Profiles</h4>
         <p>
           <span>ORCID: 0000-0002-2092-5487</span>
@@ -1501,64 +1319,60 @@
           <span>ResearcherID: ADL-0295-2022</span>
         </p>
       </div>
-      <div class="social-bar">
-        <a href="https://scholar.google.com/citations?user=qALFk9wAAAAJ" target="_blank" class="social-link" title="Google Scholar">GS</a>
-        <a href="https://www.researchgate.net/profile/Saptadeep-Biswas" target="_blank" class="social-link" title="ResearchGate">RG</a>
-        <a href="https://orcid.org/0000-0002-2092-5487" target="_blank" class="social-link" title="ORCID">iD</a>
-        <a href="https://sites.google.com/view/saptadeepbiswas" target="_blank" class="social-link" title="Personal Site">WEB</a>
+      <div class="socials">
+        <a href="https://scholar.google.com/citations?user=qALFk9wAAAAJ" target="_blank" class="soc" title="Google Scholar">GS</a>
+        <a href="https://www.researchgate.net/profile/Saptadeep-Biswas" target="_blank" class="soc" title="ResearchGate">RG</a>
+        <a href="https://orcid.org/0000-0002-2092-5487" target="_blank" class="soc" title="ORCID">iD</a>
+        <a href="https://sites.google.com/view/saptadeepbiswas" target="_blank" class="soc" title="Personal Site">WEB</a>
+        <a href="https://github.com/saptadeepb" target="_blank" class="soc" title="GitHub">GH</a>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <p>© 2026 Dr. Saptadeep Biswas · GITAM University, Visakhapatnam</p>
+  <p>© 2026 Dr. Saptadeep Biswas · SANKALP Lab · GITAM University, Visakhapatnam</p>
   <p>ORCID: 0000-0002-2092-5487 · Scopus: 57836172100</p>
 </footer>
 
 <script>
-  // Custom Cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
-  function animRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) *.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animRing);
-  }
-  animRing();
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => { cursor.style.width = '18px'; cursor.style.height = '18px'; ring.style.width = '56px'; ring.style.height = '56px'; ring.style.opacity = '0.3'; });
-    el.addEventListener('mouseleave', () => { cursor.style.width = '10px'; cursor.style.height = '10px'; ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.6'; });
+/* ── CURSOR ── */
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+});
+(function loop() {
+  rx += (mx - rx) * .12; ry += (my - ry) * .12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.classList.add('hovered'); ring.classList.add('hovered'); });
+  el.addEventListener('mouseleave', () => { cur.classList.remove('hovered'); ring.classList.remove('hovered'); });
+});
+
+/* ── SCROLL REVEAL ── */
+const ro = new IntersectionObserver(entries =>
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* ── PUBLICATION FILTER ── */
+function fp(cat, btn) {
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.pub').forEach(p => {
+    p.style.display = (cat === 'all' || (p.dataset.cat||'').includes(cat)) ? '' : 'none';
   });
+}
 
-  // Scroll Reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.1 });
-  reveals.forEach(r => observer.observe(r));
-
-  // Publication Filter
-  function filterPubs(cat, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.pub-item').forEach(item => {
-      if (cat === 'all') { item.style.display = ''; return; }
-      const cats = item.dataset.cat || '';
-      item.style.display = cats.includes(cat) ? '' : 'none';
-    });
-  }
-
-  // Nav scroll effect
-  window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    if (window.scrollY > 60) { nav.style.borderBottomColor = 'rgba(10,10,15,0.12)'; }
-    else { nav.style.borderBottomColor = 'rgba(10,10,15,0.07)'; }
-  });
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('topnav').style.borderBottomColor =
+    window.scrollY > 50 ? 'rgba(9,9,14,.12)' : 'rgba(9,9,14,.06)';
+});
 </script>
 </body>
 </html>
