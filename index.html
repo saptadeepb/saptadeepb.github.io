@@ -16,8 +16,8 @@
   --white:    #faf9f4;
   --mid:      #64636f;
   --light:    #e2ddd3;
-  --accent:   #b83228;   /* deep crimson */
-  --navy:     #18345f;   /* rich navy */
+  --accent:   #b83228;
+  --navy:     #18345f;
   --gold:     #a97c0e;
   --saffron:  #d4681a;
   --sage:     #3d6b58;
@@ -74,7 +74,6 @@ body {
 .label-light { color: rgba(244,241,232,.38); }
 .divider { width: 40px; height: 2px; background: var(--accent); margin: 1.6rem 0; }
 
-/* reveal on scroll */
 .reveal {
   opacity: 0; transform: translateY(26px);
   transition: opacity .7s ease, transform .7s ease;
@@ -91,7 +90,6 @@ body {
 @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
 @keyframes pulse    { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.7)} }
 @keyframes drift    { 0%,100%{transform:translate(-50%,-50%) rotate(0deg) scale(1)} 50%{transform:translate(-50%,-50%) rotate(3deg) scale(1.02)} }
-@keyframes shimmer  { 0%{background-position:200% center} 100%{background-position:-200% center} }
 
 /* ════════════════════════════════════════════════
    NAV
@@ -112,7 +110,6 @@ nav {
   color: var(--ink); line-height: 1;
   display: flex; align-items: center; gap: .1em;
 }
-/* SANKALP colored letters in nav */
 .nc-s { color: var(--accent); }
 .nc-a { color: var(--saffron); }
 .nc-n { color: var(--gold); }
@@ -147,7 +144,6 @@ nav {
   overflow: hidden; position: relative;
 }
 
-/* LEFT */
 .hero-l {
   display: flex; flex-direction: column; justify-content: center;
   padding: 9rem 4.5rem 5rem;
@@ -167,7 +163,6 @@ nav {
 }
 .hero-name em { font-style: italic; color: var(--navy); }
 
-/* SANKALP inline in hero */
 .hero-lab-row {
   display: flex; align-items: center; gap: .9rem;
   margin-bottom: 1.6rem;
@@ -234,7 +229,6 @@ nav {
 .btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
 .btn-ghost:hover { background: var(--ink); color: var(--cream); }
 
-/* RIGHT */
 .hero-r {
   position: relative; overflow: hidden;
   background: linear-gradient(135deg, #18345f 0%, #0c2040 55%, #06101f 100%);
@@ -247,7 +241,6 @@ nav {
   background-size: 56px 56px;
   pointer-events: none;
 }
-/* animated watermark */
 .hero-wm {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
@@ -267,7 +260,6 @@ nav {
   line-height: 1;
 }
 
-/* badge */
 .hero-badge {
   position: absolute; top: 2.5rem; right: 2.5rem; z-index: 4;
   opacity: 0; animation: fadeIn .8s ease forwards 1.5s;
@@ -284,7 +276,6 @@ nav {
   animation: pulse 1.6s infinite;
 }
 
-/* stats */
 .hero-stats-wrap {
   position: absolute; bottom: 0; left: 0; right: 0;
   padding: 2.5rem; z-index: 3;
@@ -318,14 +309,13 @@ nav {
 }
 
 /* ════════════════════════════════════════════════
-   SANKALP DEDICATED SECTION
+   SANKALP SECTION
 ════════════════════════════════════════════════ */
 #sankalp {
   background: var(--ink);
   padding: 8rem 4.5rem;
   position: relative; overflow: hidden;
 }
-/* giant Devanagari watermark */
 #sankalp::after {
   content: 'संकल्प';
   position: absolute; right: -1.5rem; top: 50%;
@@ -341,7 +331,6 @@ nav {
   position: relative; z-index: 1;
 }
 
-/* Left: logo area */
 .sk-logo {
   display: flex; flex-direction: column; gap: .6rem;
   margin-bottom: 2.2rem;
@@ -368,7 +357,6 @@ nav {
   font-style: italic; color: rgba(255,255,255,.1);
 }
 
-/* meaning block */
 .sk-meaning {
   border-left: 2px solid var(--saffron); padding-left: 1.4rem;
 }
@@ -383,8 +371,6 @@ nav {
   color: rgba(244,241,232,.55); line-height: 1.72;
 }
 
-/* Right: acronym breakdown */
-.sk-right {}
 .sk-acronym-label {
   font-family: var(--font-mono); font-size: .58rem;
   letter-spacing: .25em; text-transform: uppercase;
@@ -412,7 +398,6 @@ nav {
 }
 .sk-def strong { color: white; font-weight: 500; }
 
-/* Pledge */
 .sk-pledge {
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.08);
@@ -815,7 +800,6 @@ footer p {
 
     <h1 class="hero-name">Dr. Saptadeep<br><em>Biswas</em></h1>
 
-    <!-- SANKALP Lab name — prominently displayed -->
     <div class="hero-lab-row">
       <span class="hl-word">
         <span class="hl-s">S</span><span class="hl-a">A</span><span class="hl-n">N</span><span class="hl-k">K</span><span class="hl-a2">A</span><span class="hl-lp">LP</span>
@@ -853,8 +837,9 @@ footer p {
     </div>
     <div class="hero-stats-wrap">
       <div class="hero-stats">
+        <!-- Updated: Citations 317, h-index 8, 32 publications, 138 reviews -->
         <div class="stat">
-          <div class="stat-num">250<sup>+</sup></div>
+          <div class="stat-num">317<sup>+</sup></div>
           <div class="stat-lbl">Total Citations</div>
         </div>
         <div class="stat">
@@ -862,8 +847,8 @@ footer p {
           <div class="stat-lbl">h-index</div>
         </div>
         <div class="stat">
-          <div class="stat-num">16<sup>+</sup></div>
-          <div class="stat-lbl">Journal Papers</div>
+          <div class="stat-num">32<sup>+</sup></div>
+          <div class="stat-lbl">Research Outputs</div>
         </div>
         <div class="stat">
           <div class="stat-num">138</div>
@@ -878,7 +863,6 @@ footer p {
 <section id="sankalp">
   <div class="sankalp-wrap">
 
-    <!-- Left -->
     <div class="reveal">
       <div class="sk-logo">
         <span class="sk-letters">
@@ -893,7 +877,6 @@ footer p {
       </div>
     </div>
 
-    <!-- Right -->
     <div class="reveal d2">
       <span class="sk-acronym-label">Full Acronym</span>
       <div class="sk-row">
@@ -1010,8 +993,9 @@ footer p {
 <!-- ══════════ METRICS ══════════ -->
 <section id="metrics">
   <div class="metrics-grid">
+    <!-- Updated from Google Scholar PDF: 317 citations, h=8, i10=8 -->
     <div class="met reveal">
-      <span class="met-big">250<sup>+</sup></span>
+      <span class="met-big">317<sup>+</sup></span>
       <span class="met-lbl">Google Scholar<br>Citations</span>
     </div>
     <div class="met reveal d1">
@@ -1042,7 +1026,8 @@ footer p {
     </div>
     <div class="pub-kpis">
       <div class="kpi">
-        <span class="kpi-val">75</span>
+        <!-- Updated: DE-Gazelle now has 98 citations -->
+        <span class="kpi-val">98</span>
         <span class="kpi-lbl">Top Citations<br>(Single Paper)</span>
       </div>
       <div class="kpi">
@@ -1057,17 +1042,81 @@ footer p {
     <button class="f-btn"     onclick="fp('q1',this)">Q1 Journals</button>
     <button class="f-btn"     onclick="fp('disaster',this)">Disaster Mgmt</button>
     <button class="f-btn"     onclick="fp('optimization',this)">Optimization</button>
+    <button class="f-btn"     onclick="fp('supply',this)">Supply Chain</button>
+    <button class="f-btn"     onclick="fp('2026',this)">2026</button>
   </div>
 
   <div class="pub-list" id="pubList">
 
+    <!-- ── 2026 ── -->
+    <div class="pub" data-cat="2026 supply q1">
+      <span class="p-yr">2026</span>
+      <div class="p-body">
+        <h4>Strategic Optimization of Medical Oxygen Supply Chains for Healthcare Response in Concurrent Multi-Disaster Scenarios</h4>
+        <p class="p-journal">Concurrency and Computation: Practice and Experience, 38(8), e70712</p>
+        <div class="p-tags">
+          <span class="pt q1">SCIE</span><span class="pt">2026</span>
+        </div>
+      </div>
+      <a href="https://doi.org/10.1002/cpe.70712" target="_blank" class="p-doi">DOI ↗</a>
+    </div>
+
+    <div class="pub" data-cat="2026 optimization">
+      <span class="p-yr">2026</span>
+      <div class="p-body">
+        <h4>Adaptive hybrid crayfish–Harmonic search metaheuristic for robust feature selection in supervised classification</h4>
+        <p class="p-journal">Cluster Computing, 29(4), 238</p>
+        <div class="p-tags">
+          <span class="pt q1">SCIE</span><span class="pt">2026</span>
+        </div>
+      </div>
+      <span class="p-doi" style="color:var(--mid);cursor:default">In Press</span>
+    </div>
+
+    <div class="pub" data-cat="2026 disaster">
+      <span class="p-yr">2026</span>
+      <div class="p-body">
+        <h4>Distribution-free flash-flood human-impact forecasting under temporal covariate shift</h4>
+        <p class="p-journal">Preprint (2026)</p>
+        <div class="p-tags">
+          <span class="pt">Preprint</span><span class="pt">2026</span>
+        </div>
+      </div>
+      <span class="p-doi" style="color:var(--mid);cursor:default">Under Review</span>
+    </div>
+
+    <div class="pub" data-cat="2026 optimization">
+      <span class="p-yr">2026</span>
+      <div class="p-body">
+        <h4>Soft Computing-Enabled Optimization of Multi-Choice Stochastic Transportation Problem Involving Exponential and Logistic Distributions</h4>
+        <p class="p-journal">Proceedings of the National Academy of Sciences, India — Section A: Physical Sciences</p>
+        <div class="p-tags">
+          <span class="pt q1">SCIE</span><span class="pt">2026</span>
+        </div>
+      </div>
+      <span class="p-doi" style="color:var(--mid);cursor:default">In Press</span>
+    </div>
+
+    <div class="pub" data-cat="2026 disaster supply">
+      <span class="p-yr">2026</span>
+      <div class="p-body">
+        <h4>A redistribution-based multi-stage humanitarian logistic design model considering the spherical fuzzy methodology</h4>
+        <p class="p-journal">International Journal of Logistics Systems and Management, 53(4), 522–557</p>
+        <div class="p-tags">
+          <span class="pt q1">ESCI</span><span class="pt">2026</span>
+        </div>
+      </div>
+      <span class="p-doi" style="color:var(--mid);cursor:default">Published</span>
+    </div>
+
+    <!-- ── 2025 ── -->
     <div class="pub" data-cat="q1 optimization">
       <span class="p-yr">2025</span>
       <div class="p-body">
         <h4>Integrating Differential Evolution into Gazelle Optimization for advanced global optimization and engineering applications</h4>
         <p class="p-journal">Computer Methods in Applied Mechanics and Engineering, 434, 117588</p>
         <div class="p-tags">
-          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 7.3</span><span class="pt">75 Citations</span>
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 7.3</span><span class="pt">98 Citations</span>
         </div>
       </div>
       <a href="https://doi.org/10.1016/j.cma.2024.117588" target="_blank" class="p-doi">DOI ↗</a>
@@ -1076,10 +1125,10 @@ footer p {
     <div class="pub" data-cat="q1 optimization">
       <span class="p-yr">2025</span>
       <div class="p-body">
-        <h4>Enhanced crayfish optimization algorithm with differential evolution's mutation and crossover strategies for global optimization</h4>
-        <p class="p-journal">Artificial Intelligence Review, 58(3)</p>
+        <h4>Enhanced crayfish optimization algorithm with differential evolution's mutation and crossover strategies for global optimization and engineering applications</h4>
+        <p class="p-journal">Artificial Intelligence Review, 58(3), 69</p>
         <div class="p-tags">
-          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 13.9</span><span class="pt">30 Citations</span>
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 13.9</span><span class="pt">45 Citations</span>
         </div>
       </div>
       <a href="https://doi.org/10.1007/s10462-024-11069-7" target="_blank" class="p-doi">DOI ↗</a>
@@ -1091,7 +1140,7 @@ footer p {
         <h4>Emergency medical facility site selection in drone-based relief operations using an enhanced T-spherical fuzzy Frank combined compromise solution method</h4>
         <p class="p-journal">Engineering Applications of Artificial Intelligence, 161, 112140</p>
         <div class="p-tags">
-          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 8.0</span>
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 8.0</span><span class="pt">4 Citations</span>
         </div>
       </div>
       <a href="https://doi.org/10.1016/j.engappai.2025.112140" target="_blank" class="p-doi">DOI ↗</a>
@@ -1103,7 +1152,7 @@ footer p {
         <h4>Calibrated geo-social link prediction for household–school connectivity in community resilience</h4>
         <p class="p-journal">International Journal of Disaster Risk Reduction, 131, 105872</p>
         <div class="p-tags">
-          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">ABDC: A</span>
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">1 Citation</span><span class="pt">ABDC: A</span>
         </div>
       </div>
       <a href="https://doi.org/10.1016/j.ijdrr.2025.105872" target="_blank" class="p-doi">DOI ↗</a>
@@ -1113,36 +1162,97 @@ footer p {
       <span class="p-yr">2025</span>
       <div class="p-body">
         <h4>A multi-objective optimization approach for resource allocation and transportation planning in institutional quarantine centres</h4>
-        <p class="p-journal">Annals of Operations Research, 346, 781–825</p>
+        <p class="p-journal">Annals of Operations Research, 346(2), 781–825</p>
         <div class="p-tags">
-          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">ABDC: A</span><span class="pt">15 Citations</span>
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">19 Citations</span><span class="pt">ABDC: A</span>
         </div>
       </div>
       <a href="https://doi.org/10.1007/s10479-024-06072-8" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
+    <div class="pub" data-cat="q1 optimization">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
+        <h4>A novel hybrid optimizer based on coati optimization algorithm and differential evolution for global optimization and constrained engineering problems</h4>
+        <p class="p-journal">International Journal of Computational Intelligence Systems, 18(1), 157</p>
+        <div class="p-tags">
+          <span class="pt q1">SCIE</span><span class="pt">10 Citations</span>
+        </div>
+      </div>
+      <a href="https://doi.org/10.1007/s44196-025-00932-5" target="_blank" class="p-doi">DOI ↗</a>
+    </div>
+
+    <div class="pub" data-cat="q1 optimization">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
+        <h4>An innovative hybrid method combining grey wolf and marine predator optimization techniques for global and constrained problem-solving</h4>
+        <p class="p-journal">The Journal of Supercomputing, 81(8), 917</p>
+        <div class="p-tags">
+          <span class="pt q1">SCIE</span><span class="pt">1 Citation</span>
+        </div>
+      </div>
+      <a href="https://doi.org/10.1007/s11227-025-06979-0" target="_blank" class="p-doi">DOI ↗</a>
+    </div>
+
+    <div class="pub" data-cat="q1 optimization">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
+        <h4>Enhanced Global Optimization Using a Novel Hybrid Sine Cosine-Gazelle Algorithm with Brownian Motion and Lévy Flight Mechanisms</h4>
+        <p class="p-journal">International Journal of Computational Intelligence Systems, 18(1), 108</p>
+        <div class="p-tags">
+          <span class="pt q1">SCIE</span><span class="pt">4 Citations</span>
+        </div>
+      </div>
+      <a href="https://doi.org/10.1007/s44196-025-00925-4" target="_blank" class="p-doi">DOI ↗</a>
+    </div>
+
+    <div class="pub" data-cat="q1 optimization">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
+        <h4>A Chaotic Boost: The Chaotic Crayfish Optimization Algorithm for Superior Solution Quality</h4>
+        <p class="p-journal">Optimal Control Applications and Methods, 46(4), 1650–1694</p>
+        <div class="p-tags">
+          <span class="pt q1">SCIE</span><span class="pt">4 Citations</span>
+        </div>
+      </div>
+      <a href="https://doi.org/10.1002/oca.3248" target="_blank" class="p-doi">DOI ↗</a>
+    </div>
+
+    <div class="pub" data-cat="disaster">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
+        <h4>Performance of a Five-Layer ANN Model for Earthquake Magnitude Prediction and Spatial Risk Mapping in Turkey</h4>
+        <p class="p-journal">Decision Making Advances, 3(1), 40–49</p>
+        <div class="p-tags">
+          <span class="pt">Open Access</span><span class="pt">6 Citations</span>
+        </div>
+      </div>
+      <a href="https://doi.org/10.31181/dma31202522" target="_blank" class="p-doi">DOI ↗</a>
+    </div>
+
+    <div class="pub" data-cat="disaster q1">
+      <span class="p-yr">2025</span>
+      <div class="p-body">
+        <h4>An artificial neural network-based transportation problem in hilly areas considering geographical obstacles</h4>
+        <p class="p-journal">International Journal of Systems Assurance Engineering and Management</p>
+        <div class="p-tags">
+          <span class="pt q1">SCIE</span><span class="pt">2 Citations</span>
+        </div>
+      </div>
+      <a href="https://doi.org/10.1007/s13198-025-02724-7" target="_blank" class="p-doi">DOI ↗</a>
+    </div>
+
+    <!-- ── 2024 ── -->
     <div class="pub" data-cat="q1 disaster">
       <span class="p-yr">2024</span>
       <div class="p-body">
         <h4>An AI-based framework for earthquake relief demand forecasting: A case study in Türkiye</h4>
         <p class="p-journal">International Journal of Disaster Risk Reduction, 102, 104287</p>
         <div class="p-tags">
-          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">32 Citations</span><span class="pt">ABDC: A</span>
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 4.5</span><span class="pt">37 Citations</span><span class="pt">ABDC: A</span>
         </div>
       </div>
       <a href="https://doi.org/10.1016/j.ijdrr.2024.104287" target="_blank" class="p-doi">DOI ↗</a>
-    </div>
-
-    <div class="pub" data-cat="q1 optimization">
-      <span class="p-yr">2023</span>
-      <div class="p-body">
-        <h4>Multi-objective optimization of agro-food supply chain networking problem integrating economic viability and environmental sustainability</h4>
-        <p class="p-journal">Journal of Cleaner Production, 421, 138294</p>
-        <div class="p-tags">
-          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 10.0</span><span class="pt">35 Citations</span><span class="pt">ABDC: A</span>
-        </div>
-      </div>
-      <a href="https://doi.org/10.1016/j.jclepro.2023.138294" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
     <div class="pub" data-cat="optimization">
@@ -1151,10 +1261,23 @@ footer p {
         <h4>Enhanced prairie dog optimization with Levy flight and dynamic opposition-based learning for global optimization and engineering design problems</h4>
         <p class="p-journal">Neural Computing and Applications, 36(19), 11137–11170</p>
         <div class="p-tags">
-          <span class="pt q1">Q1</span><span class="pt">24 Citations</span>
+          <span class="pt q1">SCIE</span><span class="pt">25 Citations</span>
         </div>
       </div>
       <a href="https://doi.org/10.1007/s00521-024-09648-4" target="_blank" class="p-doi">DOI ↗</a>
+    </div>
+
+    <!-- ── 2023 ── -->
+    <div class="pub" data-cat="q1 supply">
+      <span class="p-yr">2023</span>
+      <div class="p-body">
+        <h4>Multi-objective optimization of agro-food supply chain networking problem integrating economic viability and environmental sustainability through type-2 fuzzy-based decision making</h4>
+        <p class="p-journal">Journal of Cleaner Production, 421, 138294</p>
+        <div class="p-tags">
+          <span class="pt q1">Q1 SCIE</span><span class="pt hi">IF 10.0</span><span class="pt">42 Citations</span><span class="pt">ABDC: A</span>
+        </div>
+      </div>
+      <a href="https://doi.org/10.1016/j.jclepro.2023.138294" target="_blank" class="p-doi">DOI ↗</a>
     </div>
 
   </div>
@@ -1162,13 +1285,13 @@ footer p {
   <div style="margin-top:3rem;display:flex;gap:1rem;flex-wrap:wrap" class="reveal">
     <a href="https://scholar.google.com/citations?user=qALFk9wAAAAJ" target="_blank" class="btn btn-dark"><span>View All on Google Scholar ↗</span></a>
     <a href="https://orcid.org/0000-0002-2092-5487" target="_blank" class="btn btn-ghost">ORCID Profile</a>
+    <a href="https://www.researchgate.net/profile/Saptadeep-Biswas" target="_blank" class="btn btn-ghost">ResearchGate</a>
   </div>
 </section>
 
 <!-- ══════════ TIMELINE ══════════ -->
 <section id="timeline">
   <div class="tl-wrap">
-    <!-- Education -->
     <div>
       <span class="label">Education</span>
       <h2 class="reveal">Academic<br>Foundation</h2>
@@ -1194,7 +1317,6 @@ footer p {
         <p class="desc">Professional teacher education with distinction.</p>
       </div>
     </div>
-    <!-- Experience -->
     <div>
       <span class="label">Experience</span>
       <h2 class="reveal">Career<br>Trajectory</h2>
@@ -1332,7 +1454,7 @@ footer p {
 
 <footer>
   <p>© 2026 Dr. Saptadeep Biswas · SANKALP Lab · GITAM University, Visakhapatnam</p>
-  <p>ORCID: 0000-0002-2092-5487 · Scopus: 57836172100</p>
+  <p>ORCID: 0000-0002-2092-5487 · Scopus: 57836172100 · Last updated: April 2026</p>
 </footer>
 
 <script>
